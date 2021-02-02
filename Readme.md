@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов» [![Build status][travis-image]][travis-url]
 
 * Студент: [Михаил Мигаленко](https://up.htmlacademy.ru/react/6/user/1409557).
-* Наставник: `Неизвестно`.
+* Наставник: `Jura Zubach`.
 
 ---
 
