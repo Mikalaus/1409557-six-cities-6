@@ -1,19 +1,11 @@
+import {countRating} from '../utils';
+import PremiumAdvertisement from './premium-advertisement';
 import React from 'react';
 import PropTypes from 'prop-types';
 
 const PlaceCard = (props) => {
 
   const {title, image, price, rating, type, isFavourite, isPremium} = props;
-
-  const PremiumAdvertisement = () => (
-    <div className="place-card__mark">
-      <span>Premium</span>
-    </div>
-  );
-
-  const countRating = () => {
-    return `${rating / 5 * 100}%`;
-  };
 
   return (
     <article className="cities__place-card place-card">
@@ -38,7 +30,7 @@ const PlaceCard = (props) => {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: countRating()}}></span>
+            <span style={{width: countRating(rating)}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
