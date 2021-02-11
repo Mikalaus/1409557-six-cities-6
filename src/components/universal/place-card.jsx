@@ -1,11 +1,12 @@
-import {countRating} from '../utils';
+import {countRating} from '../../utils';
 import PremiumAdvertisement from './premium-advertisement';
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 
 const PlaceCard = (props) => {
 
-  const {title, image, price, rating, type, isFavourite, isPremium} = props;
+  const {title, image, price, rating, type, isFavourite, isPremium, id} = props;
 
   return (
     <article className="cities__place-card place-card">
@@ -35,7 +36,7 @@ const PlaceCard = (props) => {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{title}</a>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
@@ -50,7 +51,8 @@ PlaceCard.propTypes = {
   price: PropTypes.number.isRequired,
   rating: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired
+  type: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired
 };
 
 export default PlaceCard;

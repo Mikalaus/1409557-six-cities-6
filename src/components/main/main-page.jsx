@@ -1,9 +1,11 @@
 import React from 'react';
-import PlaceCard from './place-card';
+import PlaceCard from '../universal/place-card';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 
-const App = (props) => {
+const MainPage = (props) => {
   const {placesList} = props;
+
   return (
     <>
       <div style={{display: `none`}}>
@@ -15,18 +17,18 @@ const App = (props) => {
           <div className="container">
             <div className="header__wrapper">
               <div className="header__left">
-                <a className="header__logo-link header__logo-link--active">
+                <Link to="/" className="header__logo-link header__logo-link--active">
                   <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
-                </a>
+                </Link>
               </div>
               <nav className="header__nav">
                 <ul className="header__nav-list">
                   <li className="header__nav-item user">
-                    <a className="header__nav-link header__nav-link--profile" href="#">
+                    <Link to="/login" className="header__nav-link header__nav-link--profile" href="#">
                       <div className="header__avatar-wrapper user__avatar-wrapper">
                       </div>
                       <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </nav>
@@ -93,17 +95,22 @@ const App = (props) => {
                   </ul>
                 </form>
                 <div className="cities__places-list places__list tabs__content">
-                  {placesList.map((place) =>
-                    <PlaceCard
-                      key={place.id}
-                      title={place.title}
-                      image={place.previewImage}
-                      price={place.price}
-                      rating={place.rating}
-                      type={place.type}
-                      isFavourite={place.isFavourite}
-                      isPremium={place.isPremium}
-                    />)
+                  {
+                    placesList.map((place) => {
+                      return (
+                        <PlaceCard
+                          key={place.id}
+                          title={place.title}
+                          image={place.previewImage}
+                          price={place.price}
+                          rating={place.rating}
+                          type={place.type}
+                          isFavourite={place.isFavourite}
+                          isPremium={place.isPremium}
+                          id={place.id}
+                        />
+                      );
+                    })
                   }
                 </div>
               </section>
@@ -118,7 +125,7 @@ const App = (props) => {
   );
 };
 
-App.propTypes = {
+MainPage.propTypes = {
   placesList: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.string.isRequired,
@@ -133,4 +140,4 @@ App.propTypes = {
   )
 };
 
-export default App;
+export default MainPage;
