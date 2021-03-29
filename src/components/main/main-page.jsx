@@ -1,7 +1,8 @@
 import React from 'react';
-import PlaceCard from '../universal/place-card';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import PlaceCardList from './place-card-list';
+import PlaceCard from '../universal/place-card';
 
 const MainPage = (props) => {
   const {placesList} = props;
@@ -96,21 +97,9 @@ const MainPage = (props) => {
                 </form>
                 <div className="cities__places-list places__list tabs__content">
                   {
-                    placesList.map((place) => {
-                      return (
-                        <PlaceCard
-                          key={place.id}
-                          title={place.title}
-                          image={place.previewImage}
-                          price={place.price}
-                          rating={place.rating}
-                          type={place.type}
-                          isFavourite={place.isFavourite}
-                          isPremium={place.isPremium}
-                          id={place.id}
-                        />
-                      );
-                    })
+                    <PlaceCardList
+                      placesList={placesList}
+                    />
                   }
                 </div>
               </section>
@@ -128,8 +117,8 @@ const MainPage = (props) => {
 MainPage.propTypes = {
   placesList: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        isFavourite: PropTypes.bool.isRequired,
+        id: PropTypes.number.isRequired,
+        isFavorite: PropTypes.bool.isRequired,
         isPremium: PropTypes.bool.isRequired,
         previewImage: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired,

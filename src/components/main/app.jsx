@@ -12,7 +12,7 @@ const App = ({placesList}) => (
     <Switch>
 
       <Route exact path="/login">
-        <SignInPage />
+        <SignInPage placesList={placesList}/>
       </Route>
 
       <Route exact path="/">
@@ -20,11 +20,13 @@ const App = ({placesList}) => (
       </Route>
 
       <Route exact path="/favourites">
-        <FavouritesPage />
+        <FavouritesPage placesList={placesList}/>
       </Route>
 
-      <Route exact path="/offer/:id">
-        <RoomInfoPage />
+      <Route exact path="/offer/:id" >
+        <RoomInfoPage
+          placesList={placesList}
+        />
       </Route>
 
       <Route>
@@ -38,8 +40,8 @@ const App = ({placesList}) => (
 App.propTypes = {
   placesList: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        isFavourite: PropTypes.bool.isRequired,
+        id: PropTypes.number.isRequired,
+        isFavorite: PropTypes.bool.isRequired,
         isPremium: PropTypes.bool.isRequired,
         previewImage: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired,

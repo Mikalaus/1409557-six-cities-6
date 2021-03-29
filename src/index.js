@@ -1,4 +1,4 @@
-import HOTELS_INFO from './mocs';
+import HOTELS_INFO from './mocs/offers';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/main/app';

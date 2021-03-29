@@ -4,12 +4,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
-const PlaceCard = (props) => {
+const PlaceCard = ({place, handleCardMouseOver}) => {
 
-  const {title, image, price, rating, type, isFavourite, isPremium, id} = props;
+  const {title, image, price, rating, type, isFavourite, isPremium, id} = place;
 
   return (
-    <article className="cities__place-card place-card">
+    <article className="cities__place-card place-card" onMouseOverCapture = {() => {
+      if (handleCardMouseOver) {
+        handleCardMouseOver(place);
+      }
+    }}>
       {isPremium ? <PremiumAdvertisement /> : isPremium}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="#">
@@ -26,7 +30,7 @@ const PlaceCard = (props) => {
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
-            <span className="visually-hidden">To bookmarks</span>
+            <span className="visually-hidden">{isFavourite ? `To bookmarks` : `In bookmarks`}</span>
           </button>
         </div>
         <div className="place-card__rating rating">
@@ -45,14 +49,16 @@ const PlaceCard = (props) => {
 };
 
 PlaceCard.propTypes = {
-  isFavourite: PropTypes.bool.isRequired,
-  isPremium: PropTypes.bool.isRequired,
-  image: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  rating: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired
+  place: PropTypes.shape({
+    isFavourite: PropTypes.bool,
+    isPremium: PropTypes.bool,
+    image: PropTypes.string,
+    price: PropTypes.number,
+    rating: PropTypes.number,
+    title: PropTypes.string,
+    type: PropTypes.string,
+    id: PropTypes.number
+  })
 };
 
 export default PlaceCard;
