@@ -3,10 +3,19 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import PlaceCardList from './place-card-list';
 import Map from '../map/map';
-import {city, points} from '../../mocs/offers';
+import {city} from '../../mocs/offers';
 
-const MainPage = (props) => {
-  const {placesList} = props;
+const MainPage = ({placesList}) => {
+
+  const getPinsForCurrentCity = (activeCity) => {
+    const pinsForCurrentCity = [];
+    placesList.forEach((place) => {
+      if (place.city.name === activeCity) {
+        pinsForCurrentCity.push(place.location);
+      }
+    });
+    return pinsForCurrentCity;
+  };
 
   return (
     <>
@@ -108,7 +117,7 @@ const MainPage = (props) => {
                 <section className="cities__map map">
                   <Map
                     city={city}
-                    points={points}
+                    points={getPinsForCurrentCity(`Amsterdam`)}
                   />
                 </section>
               </div>

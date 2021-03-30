@@ -58,7 +58,8 @@ PlaceCard.propTypes = {
     title: PropTypes.string,
     type: PropTypes.string,
     id: PropTypes.number
-  })
+  }),
+  handleCardMouseOver: PropTypes.func
 };
 
 export default PlaceCard;

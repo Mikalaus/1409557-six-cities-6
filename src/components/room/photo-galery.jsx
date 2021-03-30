@@ -1,5 +1,6 @@
 import React from 'react';
 import nanoid from 'nanoid';
+import PropTypes from 'prop-types';
 
 const PhotoGallery = ({images}) => {
 
@@ -17,6 +18,10 @@ const PhotoGallery = ({images}) => {
       }
     </div>
   );
+};
+
+PhotoGallery.propTypes = {
+  images: PropTypes.array.isRequired
 };
 
 export default PhotoGallery;

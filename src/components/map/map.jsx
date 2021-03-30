@@ -10,10 +10,12 @@ const Map = ({city, points}) => {
   useEffect(() => {
     mapRef.current = leaflet.map(`map`, {
       center: {
-        lat: city.lat,
-        lng: city.lng
+        lat: city.latitude,
+        lng: city.longitude
       },
-      zoom: city.zoom
+      zoom: city.zoom,
+      zoomControl: false,
+      marker: true
     });
 
     leaflet
@@ -29,36 +31,35 @@ const Map = ({city, points}) => {
       });
 
       leaflet.marker({
-        lat: point.lat,
-        lng: point.lng
+        lat: point.latitude,
+        lng: point.longitude
       },
       {
         icon: customIcon
       })
       .addTo(mapRef.current)
       .bindPopup(point.title);
-
-      return () => {
-        mapRef.current.remove();
-      };
     });
+
+    return () => {
+      mapRef.current.remove();
+    };
   }, []);
 
   return (
-    <div id="map"></div>
+    <div id="map" style={{height: `100%`}}/>
   );
 };
 
 Map.propTypes = {
   city: PropTypes.shape({
-    lat: PropTypes.number.isRequired,
-    lng: PropTypes.number.isRequired,
+    latitude: PropTypes.number.isRequired,
+    longitude: PropTypes.number.isRequired,
     zoom: PropTypes.number.isRequired,
   }),
   points: PropTypes.arrayOf(PropTypes.shape({
-    lat: PropTypes.number.isRequired,
-    lng: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
+    latitude: PropTypes.number.isRequired,
+    longitude: PropTypes.number.isRequired,
   }))
 };
 

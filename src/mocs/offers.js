@@ -41,7 +41,7 @@ const HOTELS_INFO = [
         longitude: 4.835168,
         zoom: 10
       },
-      name: `Selin`
+      name: `Amsterdam`
     },
     description: `A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.`,
     goods: [`Kitchen`, `Cable TV`, `Washing machine`, `Dishwasher`],
@@ -140,15 +140,7 @@ const HOTELS_INFO = [
 export default HOTELS_INFO;
 
 export const city = {
-  lat: 40.835292,
-  lng: -73.916236,
+  latitude: 52.38333,
+  longitude: 4.9,
   zoom: 10
 };
-
-export const points = [
-  {
-    lat: 40.816881,
-    lng: -73.872768,
-    title: `Парк Саундвью`
-  }
-];
