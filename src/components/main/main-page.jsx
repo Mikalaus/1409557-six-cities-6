@@ -4,18 +4,9 @@ import {Link} from 'react-router-dom';
 import PlaceCardList from './place-card-list';
 import Map from '../map/map';
 import {city} from '../../mocs/offers';
+import {getPinsForCurrentCity} from '../../utils';
 
 const MainPage = ({placesList}) => {
-
-  const getPinsForCurrentCity = (activeCity) => {
-    const pinsForCurrentCity = [];
-    placesList.forEach((place) => {
-      if (place.city.name === activeCity) {
-        pinsForCurrentCity.push(place.location);
-      }
-    });
-    return pinsForCurrentCity;
-  };
 
   return (
     <>
@@ -117,7 +108,7 @@ const MainPage = ({placesList}) => {
                 <section className="cities__map map">
                   <Map
                     city={city}
-                    points={getPinsForCurrentCity(`Amsterdam`)}
+                    points={getPinsForCurrentCity(`Amsterdam`, placesList)}
                   />
                 </section>
               </div>

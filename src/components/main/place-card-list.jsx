@@ -11,7 +11,7 @@ const PlaceCardList = ({placesList}) => {
   };
 
   return (
-    <div className="cities__places-list places__list tabs__content">
+    <>
       {
         placesList.map((place) => {
           return (
@@ -23,7 +23,7 @@ const PlaceCardList = ({placesList}) => {
           );
         })
       }
-    </div>
+    </>
   );
 };
 

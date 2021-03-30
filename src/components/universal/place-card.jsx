@@ -6,10 +6,10 @@ import {Link} from 'react-router-dom';
 
 const PlaceCard = ({place, handleCardMouseOver}) => {
 
-  const {title, image, price, rating, type, isFavourite, isPremium, id} = place;
+  const {title, previewImage, price, rating, type, isFavourite, isPremium, id} = place;
 
   return (
-    <article className="cities__place-card place-card" onMouseOverCapture = {() => {
+    <article className={`cities__place-card place-card`} onMouseOverCapture = {() => {
       if (handleCardMouseOver) {
         handleCardMouseOver(place);
       }
@@ -17,7 +17,7 @@ const PlaceCard = ({place, handleCardMouseOver}) => {
       {isPremium ? <PremiumAdvertisement /> : isPremium}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="#">
-          <img className="place-card__image" src={image} width="260" height="200" alt="Place image"/>
+          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place image"/>
         </a>
       </div>
       <div className="place-card__info">
@@ -52,7 +52,7 @@ PlaceCard.propTypes = {
   place: PropTypes.shape({
     isFavourite: PropTypes.bool,
     isPremium: PropTypes.bool,
-    image: PropTypes.string,
+    previewImage: PropTypes.string,
     price: PropTypes.number,
     rating: PropTypes.number,
     title: PropTypes.string,

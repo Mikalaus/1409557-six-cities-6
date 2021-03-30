@@ -2,6 +2,17 @@ const countRating = (rating) => {
   return `${rating / 5 * 100}%`;
 };
 
+const getPinsForCurrentCity = (activeCity, offers) => {
+  const pinsForCurrentCity = [];
+  offers.forEach((place) => {
+    if (place.city.name === activeCity) {
+      pinsForCurrentCity.push(place.location);
+    }
+  });
+  return pinsForCurrentCity;
+};
+
 export {
-  countRating
+  countRating,
+  getPinsForCurrentCity
 };
