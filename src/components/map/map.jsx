@@ -1,10 +1,13 @@
 import React, {useEffect, useRef} from 'react';
 import leaflet from 'leaflet';
 import PropTypes from 'prop-types';
+import mapStateToProps from '../../store/state-to-props';
+import {connect} from 'react-redux';
 
 import 'leaflet/dist/leaflet.css';
 
-const Map = ({city, points}) => {
+const Map = ({city, points, activePoint = {}}) => {
+
   const mapRef = useRef();
 
   useEffect(() => {
@@ -26,7 +29,7 @@ const Map = ({city, points}) => {
 
     points.forEach((point) => {
       const customIcon = leaflet.icon({
-        iconUrl: `./img/pin.svg`,
+        iconUrl: point === activePoint ? `./img/pin-active.svg` : `./img/pin.svg`,
         iconSize: [27, 39]
       });
 
@@ -43,7 +46,7 @@ const Map = ({city, points}) => {
     return () => {
       mapRef.current.remove();
     };
-  }, [city]);
+  }, [city, activePoint]);
 
   return (
     <div id="map" style={{height: `100%`}}/>
@@ -59,7 +62,15 @@ Map.propTypes = {
   points: PropTypes.arrayOf(PropTypes.shape({
     latitude: PropTypes.number.isRequired,
     longitude: PropTypes.number.isRequired,
-  }))
+  })),
+  activePoint: PropTypes.shape({
+    latitude: PropTypes.number,
+    longitude: PropTypes.number,
+    zoom: PropTypes.number,
+  })
 };
 
-export default Map;
+const mapState = mapStateToProps(`Map`);
+
+export {Map};
+export default connect(mapState, null)(Map);

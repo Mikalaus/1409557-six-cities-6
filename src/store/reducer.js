@@ -8,7 +8,8 @@ const initialState = {
     longitude: 4.9,
     zoom: 10
   },
-  offers: getOffersForCurrentCity(`Paris`)
+  offers: getOffersForCurrentCity(`Paris`),
+  activePoint: {}
 };
 
 const reducer = (state = initialState, action) => {
@@ -31,6 +32,11 @@ const reducer = (state = initialState, action) => {
         offers: action.payload
       };
 
+    case ActionType.SET_ACTIVE_POINT:
+      return {
+        ...state,
+        activePoint: action.payload
+      };
 
     default:
       return (state);

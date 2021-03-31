@@ -15,6 +15,18 @@ const mapDispatchToProps = (component) => {
       }
     });
 
+    case `PlaceCardList`: return (dispatch) => ({
+      setActivePoint(point) {
+        dispatch(ActionCreator.setActivePointAction(point));
+      }
+    });
+
+    case `SortingOptionsForm`: return (dispatch) => ({
+      setSortedOffers(offers) {
+        dispatch(ActionCreator.setOffersAction(offers));
+      }
+    });
+
     default: return undefined;
   }
 };

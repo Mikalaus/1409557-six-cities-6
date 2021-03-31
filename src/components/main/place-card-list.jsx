@@ -2,19 +2,27 @@ import React, {useState} from 'react';
 import PlaceCard from '../universal/place-card';
 import PropTypes from 'prop-types';
 import nanoid from 'nanoid';
+import mapDispatchToProps from '../../store/dispatch-to-props';
+import {connect} from 'react-redux';
+import mapStateToProps from '../../store/state-to-props';
 
-const PlaceCardList = ({placesList}) => {
+const PlaceCardList = ({offers, setActivePoint}) => {
 
-  const [cardActive, setActiveCard] = useState(placesList[0]);
+  const [cardActive = {
+    latitude: 0,
+    longitude: 0,
+    zoom: 0
+  }, setActiveCard] = useState();
 
   const handleCardMouseOver = (place) => {
     setActiveCard(place);
+    setActivePoint(cardActive.location);
   };
 
   return (
     <>
       {
-        placesList.map((place) => {
+        offers.map((place) => {
           return (
             <PlaceCard
               place={place}
@@ -29,7 +37,7 @@ const PlaceCardList = ({placesList}) => {
 };
 
 PlaceCardList.propTypes = {
-  placesList: PropTypes.arrayOf(
+  offers: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number.isRequired,
         isFavorite: PropTypes.bool.isRequired,
@@ -40,7 +48,12 @@ PlaceCardList.propTypes = {
         title: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired
       })
-  )
+  ),
+  setActivePoint: PropTypes.func.isRequired
 };
 
-export default PlaceCardList;
+const placeCardListDispatch = mapDispatchToProps(`PlaceCardList`);
+const placeCardListState = mapStateToProps(`PlaceCardsList`);
+
+export {PlaceCardList};
+export default connect(placeCardListState, placeCardListDispatch)(PlaceCardList);

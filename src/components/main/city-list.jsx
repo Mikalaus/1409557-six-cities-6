@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import mapDispatchToProps from '../../store/dispatch-to-props';
+import mapStateToProps from '../../store/state-to-props';
 import PropTypes from 'prop-types';
 
 const CityList = ({setActiveCity}) => {

@@ -28,7 +28,7 @@ const HOTELS_INFO = [
     },
     maxAdults: 4,
     previewImage: `img/apartment-01.jpg`,
-    price: 120,
+    price: 310,
     rating: 4.8,
     title: `Beautiful & luxurious studio at great location`,
     type: `apartment`
@@ -75,7 +75,7 @@ const HOTELS_INFO = [
         longitude: 4.825168,
         zoom: 10
       },
-      name: `Brussels`
+      name: `Amsterdam`
     },
     description: `A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.`,
     goods: [`Coffee machine`, `Dishwasher`],
@@ -109,7 +109,7 @@ const HOTELS_INFO = [
         longitude: 4.885168,
         zoom: 10
       },
-      name: `Hamburg`
+      name: `Amsterdam`
     },
     description: `A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.`,
     goods: [`Heating`, `Kitchen`, `Coffee machine`],
