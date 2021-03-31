@@ -1,3 +1,5 @@
+import HOTELS_INFO from './mocs/offers';
+
 const countRating = (rating) => {
   return `${rating / 5 * 100}%`;
 };
@@ -12,7 +14,18 @@ const getPinsForCurrentCity = (activeCity, offers) => {
   return pinsForCurrentCity;
 };
 
+const getOffersForCurrentCity = (activeCity) => {
+  const offersForCurrentCity = [];
+  HOTELS_INFO.forEach((place) => {
+    if (place.city.name === activeCity) {
+      offersForCurrentCity.push(place);
+    }
+  });
+  return offersForCurrentCity;
+};
+
 export {
   countRating,
-  getPinsForCurrentCity
+  getPinsForCurrentCity,
+  getOffersForCurrentCity
 };

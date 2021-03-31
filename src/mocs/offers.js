@@ -75,7 +75,7 @@ const HOTELS_INFO = [
         longitude: 4.825168,
         zoom: 10
       },
-      name: `Koliran`
+      name: `Brussels`
     },
     description: `A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.`,
     goods: [`Coffee machine`, `Dishwasher`],
@@ -109,7 +109,7 @@ const HOTELS_INFO = [
         longitude: 4.885168,
         zoom: 10
       },
-      name: `Fillis`
+      name: `Hamburg`
     },
     description: `A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.`,
     goods: [`Heating`, `Kitchen`, `Coffee machine`],

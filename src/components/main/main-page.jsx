@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import PlaceCardList from './place-card-list';
 import Map from '../map/map';
-import {city} from '../../mocs/offers';
 import {getPinsForCurrentCity} from '../../utils';
+import CityList from './city-list';
+import {connect} from 'react-redux';
+import mapStateToProps from '../../store/state-to-props';
+import MainNoOffers from './main--no-offers';
 
-const MainPage = ({placesList}) => {
+const MainPage = ({offers, cityLocation, cityName}) => {
 
   return (
     <>
@@ -42,77 +45,51 @@ const MainPage = ({placesList}) => {
           <h1 className="visually-hidden">Cities</h1>
           <div className="tabs">
             <section className="locations container">
-              <ul className="locations__list tabs__list">
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="#">
-                    <span>Paris</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="#">
-                    <span>Cologne</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="#">
-                    <span>Brussels</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item tabs__item--active">
-                    <span>Amsterdam</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="#">
-                    <span>Hamburg</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="#">
-                    <span>Dusseldorf</span>
-                  </a>
-                </li>
-              </ul>
+              <CityList />
             </section>
           </div>
           <div className="cities">
-            <div className="cities__places-container container">
-              <section className="cities__places places">
-                <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">312 places to stay in Amsterdam</b>
-                <form className="places__sorting" action="#" method="get">
-                  <span className="places__sorting-caption">Sort by</span>
-                  <span className="places__sorting-type" tabIndex="0">
-                    Popular
-                    <svg className="places__sorting-arrow" width="7" height="4">
-                      <use xlinkHref="#icon-arrow-select"></use>
-                    </svg>
-                  </span>
-                  <ul className="places__options places__options--custom places__options--opened">
-                    <li className="places__option places__option--active" tabIndex="0">Popular</li>
-                    <li className="places__option" tabIndex="0">Price: low to high</li>
-                    <li className="places__option" tabIndex="0">Price: high to low</li>
-                    <li className="places__option" tabIndex="0">Top rated first</li>
-                  </ul>
-                </form>
-                <div className="cities__places-list places__list tabs__content">
-                  {
-                    <PlaceCardList
-                      placesList={placesList}
-                    />
-                  }
+            {offers.length === 0 ?
+              (
+                <MainNoOffers />
+              ) : (
+                <div className="cities__places-container container">
+                  <section className="cities__places places">
+                    <h2 className="visually-hidden">Places</h2>
+                    <b className="places__found">{offers.length} places to stay in Amsterdam</b>
+                    <form className="places__sorting" action="#" method="get">
+                      <span className="places__sorting-caption">Sort by</span>
+                      <span className="places__sorting-type" tabIndex="0">
+                        Popular
+                        <svg className="places__sorting-arrow" width="7" height="4">
+                          <use xlinkHref="#icon-arrow-select"></use>
+                        </svg>
+                      </span>
+                      <ul className="places__options places__options--custom places__options--closed">
+                        <li className="places__option places__option--active" tabIndex="0">Popular</li>
+                        <li className="places__option" tabIndex="0">Price: low to high</li>
+                        <li className="places__option" tabIndex="0">Price: high to low</li>
+                        <li className="places__option" tabIndex="0">Top rated first</li>
+                      </ul>
+                    </form>
+                    <div className="cities__places-list places__list tabs__content">
+                      {
+                        <PlaceCardList
+                          placesList={offers}
+                        />
+                      }
+                    </div>
+                  </section>
+                  <div className="cities__right-section">
+                    <section className="cities__map map">
+                      <Map
+                        city={cityLocation}
+                        points={getPinsForCurrentCity(cityName, offers)}
+                      />
+                    </section>
+                  </div>
                 </div>
-              </section>
-              <div className="cities__right-section">
-                <section className="cities__map map">
-                  <Map
-                    city={city}
-                    points={getPinsForCurrentCity(`Amsterdam`, placesList)}
-                  />
-                </section>
-              </div>
-            </div>
+              )}
           </div>
         </main>
       </div>
@@ -121,7 +98,7 @@ const MainPage = ({placesList}) => {
 };
 
 MainPage.propTypes = {
-  placesList: PropTypes.arrayOf(
+  offers: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number.isRequired,
         isFavorite: PropTypes.bool.isRequired,
@@ -132,7 +109,18 @@ MainPage.propTypes = {
         title: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired
       })
-  )
+  ),
+  cityLocation: PropTypes.shape(
+      {
+        latitude: PropTypes.number.isRequired,
+        longitude: PropTypes.number.isRequired,
+        zoom: PropTypes.number.isRequired
+      }
+  ),
+  cityName: PropTypes.string.isRequired
 };
 
-export default MainPage;
+const placeCardListState = mapStateToProps(`MainPage`);
+
+export {MainPage};
+export default connect(placeCardListState, null)(MainPage);

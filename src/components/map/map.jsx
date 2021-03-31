@@ -37,14 +37,13 @@ const Map = ({city, points}) => {
       {
         icon: customIcon
       })
-      .addTo(mapRef.current)
-      .bindPopup(point.title);
+      .addTo(mapRef.current);
     });
 
     return () => {
       mapRef.current.remove();
     };
-  }, []);
+  }, [city]);
 
   return (
     <div id="map" style={{height: `100%`}}/>

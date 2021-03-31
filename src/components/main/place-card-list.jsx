@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import PlaceCard from '../universal/place-card';
 import PropTypes from 'prop-types';
+import nanoid from 'nanoid';
 
 const PlaceCardList = ({placesList}) => {
 
@@ -18,7 +19,7 @@ const PlaceCardList = ({placesList}) => {
             <PlaceCard
               place={place}
               handleCardMouseOver={handleCardMouseOver}
-              key={place.id}
+              key={nanoid()}
             />
           );
         })

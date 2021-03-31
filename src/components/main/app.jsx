@@ -16,7 +16,7 @@ const App = ({placesList}) => (
       </Route>
 
       <Route exact path="/">
-        <MainPage placesList={placesList} />
+        <MainPage/>
       </Route>
 
       <Route exact path="/favourites">
