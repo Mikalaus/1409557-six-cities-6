@@ -1,6 +1,6 @@
 const AuthorizationStatus = {
-  AUTH: `AUTH`,
-  NO_AUTH: `NO_AUTH`,
+  AUTH: true,
+  NO_AUTH: false,
 };
 
 const CitiesLocation = new Map([

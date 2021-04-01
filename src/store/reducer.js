@@ -1,6 +1,6 @@
 import {ActionType} from './actions';
 import {getOffersForCurrentCity} from '../utils';
-import {AuthorizationStatus, CitiesLocation} from '../const';
+import {CitiesLocation, AuthorizationStatus} from '../const';
 
 const initialState = {
   cityName: `Paris`,

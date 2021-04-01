@@ -1,6 +1,6 @@
 import ActionCreator from "./actions";
 import {AuthorizationStatus} from "../const";
-import {adaptOffersToClient, adaptOfferToClient} from '../services/adapter';
+import {adaptOffersToClient, adaptOffer} from '../services/adapter';
 
 export const fetchOffersList = () => (dispatch, _getState, api) => (
   api.get(`/hotels`)
@@ -9,15 +9,16 @@ export const fetchOffersList = () => (dispatch, _getState, api) => (
 
 export const fetchOffer = (id) => (dispatch, _getState, api) => (
   api.get(`/hotels/${id}`)
-    .then(({offer}) => adaptOfferToClient(offer)));
+    .then(({offer}) => adaptOffer(offer)));
 
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(`/login`)
     .then(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH)))
-    .catch(() => {})
+    .catch(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.NO_AUTH)))
 );
 
-export const login = ({login: email, password}) => (dispatch, _getState, api) => (
-  api.post(`/login`, {email, password})
+export const login = (user) => (dispatch, _getState, api) => (
+  api.post(`login`, user)
     .then(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH)))
+    .then(() => dispatch(ActionCreator.redirectToRoute(`/`)))
 );

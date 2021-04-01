@@ -45,4 +45,17 @@ const adaptOffersToClient = (offers) => {
   return adaptedOffers;
 };
 
-export {adaptOffersToClient, adaptOffer};
+const adaptDataToAuthInfo = (data) => {
+  const authInfo = {
+    ...data,
+    avatarUrl: data[`avatar_url`],
+    isPro: data[`is_pro`]
+  };
+
+  delete authInfo[`avatar_url`];
+  delete authInfo[`is_pro`];
+
+  return authInfo;
+};
+
+export {adaptOffersToClient, adaptOffer, adaptDataToAuthInfo};

@@ -8,10 +8,12 @@ import CityList from './city-list';
 import {connect} from 'react-redux';
 import MainNoOffers from './main--no-offers';
 import SortingOptionsForm from './sorting-options-form';
-import {fetchOffersList} from '../../store/api-actions';
+import {checkAuth, fetchOffersList} from '../../store/api-actions';
 import Spinner from '../spinner/spinner';
 
-const MainPage = ({sortedOffers, cityLocation, cityName, isOffersLoaded, setOffers}) => {
+const MainPage = ({authorizationStatus, sortedOffers, cityLocation, cityName, isOffersLoaded, setOffers, checkAuthorization}) => {
+
+  checkAuthorization();
 
   useEffect(() => {
     if (!isOffersLoaded) {
@@ -24,6 +26,23 @@ const MainPage = ({sortedOffers, cityLocation, cityName, isOffersLoaded, setOffe
       <Spinner/>
     );
   }
+
+  const checkIsUserAuthorized = () => {
+    if (authorizationStatus) {
+      return (
+        <>
+          <div className="header__avatar-wrapper user__avatar-wrapper"></div>
+          <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+        </>
+      );
+    }
+
+    return (
+      <Link to="/login" className="header__nav-link header__nav-link--profile" href="#">
+        Sign in
+      </Link>
+    );
+  };
 
   const checkOffersAmount = () => {
     if (sortedOffers.length === 0) {
@@ -75,11 +94,7 @@ const MainPage = ({sortedOffers, cityLocation, cityName, isOffersLoaded, setOffe
               <nav className="header__nav">
                 <ul className="header__nav-list">
                   <li className="header__nav-item user">
-                    <Link to="/login" className="header__nav-link header__nav-link--profile" href="#">
-                      <div className="header__avatar-wrapper user__avatar-wrapper">
-                      </div>
-                      <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    </Link>
+                    {checkIsUserAuthorized()}
                   </li>
                 </ul>
               </nav>
@@ -125,7 +140,9 @@ MainPage.propTypes = {
   ),
   cityName: PropTypes.string.isRequired,
   isOffersLoaded: PropTypes.bool.isRequired,
-  setOffers: PropTypes.func.isRequired
+  setOffers: PropTypes.func.isRequired,
+  checkAuthorization: PropTypes.func.isRequired,
+  authorizationStatus: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = (state) => {
@@ -133,13 +150,18 @@ const mapStateToProps = (state) => {
     sortedOffers: state.sortedOffers,
     cityLocation: state.cityLocation,
     cityName: state.cityName,
-    isOffersLoaded: state.isOffersLoaded
+    isOffersLoaded: state.isOffersLoaded,
+    authorizationStatus: state.authorizationStatus
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   setOffers() {
     dispatch(fetchOffersList());
+  },
+
+  checkAuthorization() {
+    dispatch(checkAuth());
   }
 });
 
