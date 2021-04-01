@@ -1,13 +1,14 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import mapDispatchToProps from '../../store/dispatch-to-props';
-import mapStateToProps from '../../store/state-to-props';
 import PropTypes from 'prop-types';
+import ActionCreator from '../../store/actions';
+import {getOffersForCurrentCity} from '../../utils';
+import {CitiesLocation} from '../../const';
 
-const CityList = ({setActiveCity}) => {
+const CityList = ({offers, setActiveCity}) => {
 
   const clickHandler = (city) => (evt) => {
-    setActiveCity(city);
+    setActiveCity(city, offers);
     document.querySelector(`.tabs__item--active`).classList.remove(`tabs__item--active`);
     evt.stopPropagation();
     evt.currentTarget.classList.add(`tabs__item--active`);
@@ -50,10 +51,34 @@ const CityList = ({setActiveCity}) => {
 };
 
 CityList.propTypes = {
+  offers: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number,
+        isFavorite: PropTypes.bool,
+        isPremium: PropTypes.bool,
+        previewImage: PropTypes.string,
+        price: PropTypes.number,
+        rating: PropTypes.number,
+        title: PropTypes.string,
+        type: PropTypes.string
+      })
+  ),
   setActiveCity: PropTypes.func.isRequired
 };
 
-const cityListDispatch = mapDispatchToProps(`CityList`);
+const mapDispatchToProps = (dispatch) => ({
+  setActiveCity(city, offers) {
+    dispatch(ActionCreator.setCityNameAction(city));
+    dispatch(ActionCreator.setCityLocationAction(CitiesLocation.get(city)));
+    dispatch(ActionCreator.setSortedOffersAction(getOffersForCurrentCity(city, offers)));
+  }
+});
+
+const mapStateToProps = (state) => {
+  return {
+    offers: state.offers
+  };
+};
 
 export {CityList};
-export default connect(null, cityListDispatch)(CityList);
+export default connect(mapStateToProps, mapDispatchToProps)(CityList);

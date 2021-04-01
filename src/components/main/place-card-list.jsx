@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
 import PlaceCard from '../universal/place-card';
 import PropTypes from 'prop-types';
-import nanoid from 'nanoid';
-import mapDispatchToProps from '../../store/dispatch-to-props';
 import {connect} from 'react-redux';
-import mapStateToProps from '../../store/state-to-props';
+import ActionCreator from '../../store/actions';
 
 const PlaceCardList = ({offers, setActivePoint}) => {
 
@@ -27,7 +25,7 @@ const PlaceCardList = ({offers, setActivePoint}) => {
             <PlaceCard
               place={place}
               handleCardMouseOver={handleCardMouseOver}
-              key={nanoid()}
+              key={place.id}
             />
           );
         })
@@ -52,8 +50,17 @@ PlaceCardList.propTypes = {
   setActivePoint: PropTypes.func.isRequired
 };
 
-const placeCardListDispatch = mapDispatchToProps(`PlaceCardList`);
-const placeCardListState = mapStateToProps(`PlaceCardsList`);
+const mapDispatchToProps = (dispatch) => ({
+  setActivePoint(point) {
+    dispatch(ActionCreator.setActivePointAction(point));
+  }
+});
+
+const mapStateToProps = (state) => {
+  return {
+    offers: state.sortedOffers
+  };
+};
 
 export {PlaceCardList};
-export default connect(placeCardListState, placeCardListDispatch)(PlaceCardList);
+export default connect(mapStateToProps, mapDispatchToProps)(PlaceCardList);

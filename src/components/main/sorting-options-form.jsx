@@ -1,13 +1,12 @@
 import React from 'react';
-import mapStateToProps from '../../store/state-to-props';
-import mapDispatchToProps from '../../store/dispatch-to-props';
+import ActionCreator from '../../store/actions';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {getOffersForCurrentCity} from '../../utils';
 
 const SortTypes = {
-  popular: (city) => (
-    getOffersForCurrentCity(city)
+  popular: (city, offers) => (
+    getOffersForCurrentCity(city, offers)
   ),
   priceLowToHigh: (offers) => {
     offers.sort((a, b) => {
@@ -58,7 +57,7 @@ const SortingOptionsForm = ({offers, city, setSortedOffers}) => {
         </div>
 
         <ul className="places__options places__options--custom places__options--closed">
-          <li className="places__option places__option--active" tabIndex="0" onClick={clickHandler(SortTypes.popular(city))}>Popular</li>
+          <li className="places__option places__option--active" tabIndex="0" onClick={clickHandler(SortTypes.popular(city, [...offers]))}>Popular</li>
           <li className="places__option" tabIndex="0" onClick={clickHandler(SortTypes.priceHighToLow([...offers]))}>Price: high to low</li>
           <li className="places__option" tabIndex="0" onClick={clickHandler(SortTypes.priceLowToHigh([...offers]))}>Price: low to high</li>
           <li className="places__option" tabIndex="0" onClick={clickHandler(SortTypes.topRated([...offers]))}>Top rated first</li>
@@ -86,8 +85,18 @@ SortingOptionsForm.propTypes = {
   setSortedOffers: PropTypes.func
 };
 
-const sortState = mapStateToProps(`SortingOptionsForm`);
-const sortDispatch = mapDispatchToProps(`SortingOptionsForm`);
+const mapStateToProps = (state) => {
+  return {
+    offers: state.offers,
+    city: state.cityName
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  setSortedOffers(offers) {
+    dispatch(ActionCreator.setSortedOffersAction(offers));
+  }
+});
 
 export {SortingOptionsForm};
-export default connect(sortState, sortDispatch)(SortingOptionsForm);
+export default connect(mapStateToProps, mapDispatchToProps)(SortingOptionsForm);

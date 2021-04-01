@@ -7,12 +7,12 @@ import Error404Page from '../error-404-page/error-404-page';
 import RoomInfoPage from '../room/room-info-page';
 import FavouritesPage from '../favourites/favourites';
 
-const App = ({placesList}) => (
+const App = () => (
   <BrowserRouter>
     <Switch>
 
       <Route exact path="/login">
-        <SignInPage placesList={placesList}/>
+        <SignInPage/>
       </Route>
 
       <Route exact path="/">
@@ -20,13 +20,11 @@ const App = ({placesList}) => (
       </Route>
 
       <Route exact path="/favourites">
-        <FavouritesPage placesList={placesList}/>
+        <FavouritesPage/>
       </Route>
 
       <Route exact path="/offer/:id" >
-        <RoomInfoPage
-          placesList={placesList}
-        />
+        <RoomInfoPage/>
       </Route>
 
       <Route>

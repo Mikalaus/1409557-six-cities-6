@@ -1,15 +1,15 @@
-import {ActionType} from './action';
+import {ActionType} from './actions';
 import {getOffersForCurrentCity} from '../utils';
+import {AuthorizationStatus, CitiesLocation} from '../const';
 
 const initialState = {
   cityName: `Paris`,
-  cityLocation: {
-    latitude: 52.38333,
-    longitude: 4.9,
-    zoom: 10
-  },
-  offers: getOffersForCurrentCity(`Paris`),
-  activePoint: {}
+  cityLocation: CitiesLocation.get(`Paris`),
+  offers: [],
+  activePoint: {},
+  authorizationStatus: AuthorizationStatus.NO_AUTH,
+  isOffersLoaded: false,
+  sortedOffers: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -29,13 +29,27 @@ const reducer = (state = initialState, action) => {
     case ActionType.SET_OFFERS:
       return {
         ...state,
-        offers: action.payload
+        offers: action.payload,
+        sortedOffers: getOffersForCurrentCity(`Paris`, action.payload),
+        isOffersLoaded: true
+      };
+
+    case ActionType.SET_SORTED_OFFERS:
+      return {
+        ...state,
+        sortedOffers: action.payload,
       };
 
     case ActionType.SET_ACTIVE_POINT:
       return {
         ...state,
         activePoint: action.payload
+      };
+
+    case ActionType.REQUIRED_AUTHORIZATION:
+      return {
+        ...state,
+        authorizationStatus: action.payload
       };
 
     default:

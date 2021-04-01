@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 
 const CommentForm = () => {
 
-  const [rating, setRating] = useState();
+  const [, setRating] = useState();
 
-  const [comment, setComment] = useState(``);
+  const [, setComment] = useState(``);
 
   return (
     <form className="reviews__form form" action="#" method="post">

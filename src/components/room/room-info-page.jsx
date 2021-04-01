@@ -5,16 +5,16 @@ import PropTypes from 'prop-types';
 import ReviewList from './review-list';
 import REVIEWS_INFO from '../../mocs/reviews';
 import Map from '../map/map';
-import {city, PlacesNear} from '../../mocs/offers';
 import {getPinsForCurrentCity} from '../../utils';
 import PlaceCardList from '../main/place-card-list';
+import {connect} from 'react-redux';
 
-const RoomInfoPage = ({placesList}) => {
+const RoomInfoPage = ({offers, city}) => {
 
   let room = {};
   const id = Number(window.location.href.substr(-1));
 
-  placesList.map((place) => {
+  offers.map((place) => {
     if (place.id === Number(id)) {
       room = place;
     }
@@ -128,7 +128,7 @@ const RoomInfoPage = ({placesList}) => {
           <section className="property__map map">
             <Map
               city={city}
-              points={getPinsForCurrentCity(`Amsterdam`, PlacesNear)}
+              points={getPinsForCurrentCity(`Amsterdam`, [])}
             />
           </section>
         </section>
@@ -137,7 +137,7 @@ const RoomInfoPage = ({placesList}) => {
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
               <PlaceCardList
-                placesList={PlacesNear}
+                placesList={[]}
               />
             </div>
           </section>
@@ -148,7 +148,7 @@ const RoomInfoPage = ({placesList}) => {
 };
 
 RoomInfoPage.propTypes = {
-  placesList: PropTypes.arrayOf(
+  offers: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number.isRequired,
         isFavorite: PropTypes.bool.isRequired,
@@ -159,7 +159,16 @@ RoomInfoPage.propTypes = {
         title: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired
       })
-  )
+  ),
+  city: PropTypes.string.isRequired
 };
 
-export default RoomInfoPage;
+const mapStateToProps = (state) => {
+  return {
+    offers: state.sortedOffers,
+    city: state.cityName
+  };
+};
+
+export {RoomInfoPage};
+export default connect(mapStateToProps, null)(RoomInfoPage);

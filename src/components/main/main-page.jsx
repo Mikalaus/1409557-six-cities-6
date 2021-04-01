@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import PlaceCardList from './place-card-list';
@@ -6,11 +6,56 @@ import Map from '../map/map';
 import {getPinsForCurrentCity} from '../../utils';
 import CityList from './city-list';
 import {connect} from 'react-redux';
-import mapStateToProps from '../../store/state-to-props';
 import MainNoOffers from './main--no-offers';
 import SortingOptionsForm from './sorting-options-form';
+import {fetchOffersList} from '../../store/api-actions';
+import Spinner from '../spinner/spinner';
 
-const MainPage = ({offers, cityLocation, cityName}) => {
+const MainPage = ({sortedOffers, cityLocation, cityName, isOffersLoaded, setOffers}) => {
+
+  useEffect(() => {
+    if (!isOffersLoaded) {
+      setOffers();
+    }
+  }, [isOffersLoaded]);
+
+  if (!isOffersLoaded) {
+    return (
+      <Spinner/>
+    );
+  }
+
+  const checkOffersAmount = () => {
+    if (sortedOffers.length === 0) {
+      return (
+        <MainNoOffers />
+      );
+    }
+    return (
+      <div className="cities__places-container container">
+        <section className="cities__places places">
+          <h2 className="visually-hidden">Places</h2>
+          <b className="places__found">{sortedOffers.length} places to stay in {cityName}</b>
+          <SortingOptionsForm />
+          <div className="cities__places-list places__list tabs__content">
+            {
+              <PlaceCardList
+                placesList={sortedOffers}
+              />
+            }
+          </div>
+        </section>
+        <div className="cities__right-section">
+          <section className="cities__map map">
+            <Map
+              city={cityLocation}
+              points={getPinsForCurrentCity(cityName, sortedOffers)}
+            />
+          </section>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -50,33 +95,7 @@ const MainPage = ({offers, cityLocation, cityName}) => {
             </section>
           </div>
           <div className="cities">
-            {offers.length === 0 ?
-              (
-                <MainNoOffers />
-              ) : (
-                <div className="cities__places-container container">
-                  <section className="cities__places places">
-                    <h2 className="visually-hidden">Places</h2>
-                    <b className="places__found">{offers.length} places to stay in Amsterdam</b>
-                    <SortingOptionsForm />
-                    <div className="cities__places-list places__list tabs__content">
-                      {
-                        <PlaceCardList
-                          placesList={offers}
-                        />
-                      }
-                    </div>
-                  </section>
-                  <div className="cities__right-section">
-                    <section className="cities__map map">
-                      <Map
-                        city={cityLocation}
-                        points={getPinsForCurrentCity(cityName, offers)}
-                      />
-                    </section>
-                  </div>
-                </div>
-              )}
+            {checkOffersAmount()}
           </div>
         </main>
       </div>
@@ -85,7 +104,7 @@ const MainPage = ({offers, cityLocation, cityName}) => {
 };
 
 MainPage.propTypes = {
-  offers: PropTypes.arrayOf(
+  sortedOffers: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number.isRequired,
         isFavorite: PropTypes.bool.isRequired,
@@ -104,10 +123,25 @@ MainPage.propTypes = {
         zoom: PropTypes.number.isRequired
       }
   ),
-  cityName: PropTypes.string.isRequired
+  cityName: PropTypes.string.isRequired,
+  isOffersLoaded: PropTypes.bool.isRequired,
+  setOffers: PropTypes.func.isRequired
 };
 
-const placeCardListState = mapStateToProps(`MainPage`);
+const mapStateToProps = (state) => {
+  return {
+    sortedOffers: state.sortedOffers,
+    cityLocation: state.cityLocation,
+    cityName: state.cityName,
+    isOffersLoaded: state.isOffersLoaded
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  setOffers() {
+    dispatch(fetchOffersList());
+  }
+});
 
 export {MainPage};
-export default connect(placeCardListState, null)(MainPage);
+export default connect(mapStateToProps, mapDispatchToProps)(MainPage);
