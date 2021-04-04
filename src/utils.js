@@ -1,5 +1,5 @@
 const countRating = (rating) => {
-  return `${rating / 5 * 100}%`;
+  return `${Math.round(rating) / 5 * 100}%`;
 };
 
 const getPinsForCurrentCity = (activeCity, offers) => {

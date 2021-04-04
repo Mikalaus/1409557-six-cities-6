@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 
 import 'leaflet/dist/leaflet.css';
 
-const Map = ({city, points, activePoint = {}}) => {
+const Map = ({city, points, activePoint}) => {
 
   const mapRef = useRef();
 

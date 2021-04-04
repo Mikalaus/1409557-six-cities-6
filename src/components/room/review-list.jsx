@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import ReviewItem from './review-item';
 
 const ReviewList = ({reviewList}) => {
+
   return (
     <>
-      <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount"></span></h2>
+      <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviewList.length}</span></h2>
       <ul className="reviews__list">
         {
-          reviewList.map((review) => {
+          reviewList.reverse().map((review) => {
             return (
               <ReviewItem
                 key={review.id}

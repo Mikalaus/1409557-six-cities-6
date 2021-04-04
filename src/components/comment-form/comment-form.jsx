@@ -1,13 +1,22 @@
 import React, {useState} from 'react';
+import {postUserComment} from '../../store/api-actions';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 
-const CommentForm = () => {
+const CommentForm = ({id, postComment}) => {
 
-  const [, setRating] = useState();
+  const [rating, setRating] = useState();
 
-  const [, setComment] = useState(``);
+  const [comment, setComment] = useState(``);
 
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form className="reviews__form form" action="#" method="post" onSubmit = {
+      (evt) => {
+        evt.preventDefault();
+        postComment(id, {rating, comment});
+        document.querySelector(`.reviews__form`).reset();
+      }
+    }>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating" >
         <input className="form__rating-input visually-hidden" name="rating" value="5" id="5-stars" type="radio" onChange = {(evt) => {
@@ -55,7 +64,7 @@ const CommentForm = () => {
           </svg>
         </label>
       </div>
-      <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" onChange = {(evt) => {
+      <textarea className="reviews__textarea form__textarea" minLength="50" maxLength="300" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" onChange = {(evt) => {
         setComment(evt.currentTarget.value);
       }}></textarea>
       <div className="reviews__button-wrapper">
@@ -68,4 +77,14 @@ const CommentForm = () => {
   );
 };
 
-export default CommentForm;
+CommentForm.propTypes = {
+  id: PropTypes.number.isRequired,
+  postComment: PropTypes.func.isRequired
+};
+
+const mapDispatchToProps = {
+  postComment: postUserComment
+};
+
+export {CommentForm};
+export default connect(null, mapDispatchToProps)(CommentForm);

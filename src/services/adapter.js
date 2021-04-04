@@ -45,17 +45,23 @@ const adaptOffersToClient = (offers) => {
   return adaptedOffers;
 };
 
-const adaptDataToAuthInfo = (data) => {
-  const authInfo = {
-    ...data,
-    avatarUrl: data[`avatar_url`],
-    isPro: data[`is_pro`]
-  };
-
-  delete authInfo[`avatar_url`];
-  delete authInfo[`is_pro`];
-
-  return authInfo;
+const adaptReview = (review) => {
+  const adaptedReview = Object.assign(
+      {},
+      {
+        comment: review.comment,
+        date: review.date,
+        id: review.id,
+        rating: review.rating,
+        user: {
+          avatarUrl: review.user.avatar_url,
+          id: review.user.id,
+          isPro: review.user.is_pro,
+          name: review.user.name,
+        }
+      }
+  );
+  return adaptedReview;
 };
 
-export {adaptOffersToClient, adaptOffer, adaptDataToAuthInfo};
+export {adaptOffersToClient, adaptOffer, adaptReview};

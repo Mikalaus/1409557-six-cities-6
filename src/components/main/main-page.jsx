@@ -1,17 +1,13 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
-import PlaceCardList from './place-card-list';
-import Map from '../map/map';
-import {getPinsForCurrentCity} from '../../utils';
+import Cities from './cities';
 import CityList from './city-list';
 import {connect} from 'react-redux';
-import MainNoOffers from './main--no-offers';
-import SortingOptionsForm from './sorting-options-form';
 import {checkAuth, fetchOffersList} from '../../store/api-actions';
 import Spinner from '../spinner/spinner';
+import Header from '../header/header';
 
-const MainPage = ({authorizationStatus, sortedOffers, cityLocation, cityName, isOffersLoaded, setOffers, checkAuthorization}) => {
+const MainPage = ({authorizationStatus, sortedOffers, cityLocation, cityName, isOffersLoaded, setOffers, checkAuthorization, favorites}) => {
 
   checkAuthorization();
 
@@ -19,62 +15,13 @@ const MainPage = ({authorizationStatus, sortedOffers, cityLocation, cityName, is
     if (!isOffersLoaded) {
       setOffers();
     }
-  }, [isOffersLoaded]);
+  }, [isOffersLoaded, favorites]);
 
   if (!isOffersLoaded) {
     return (
       <Spinner/>
     );
   }
-
-  const checkIsUserAuthorized = () => {
-    if (authorizationStatus) {
-      return (
-        <>
-          <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-          <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-        </>
-      );
-    }
-
-    return (
-      <Link to="/login" className="header__nav-link header__nav-link--profile" href="#">
-        Sign in
-      </Link>
-    );
-  };
-
-  const checkOffersAmount = () => {
-    if (sortedOffers.length === 0) {
-      return (
-        <MainNoOffers />
-      );
-    }
-    return (
-      <div className="cities__places-container container">
-        <section className="cities__places places">
-          <h2 className="visually-hidden">Places</h2>
-          <b className="places__found">{sortedOffers.length} places to stay in {cityName}</b>
-          <SortingOptionsForm />
-          <div className="cities__places-list places__list tabs__content">
-            {
-              <PlaceCardList
-                placesList={sortedOffers}
-              />
-            }
-          </div>
-        </section>
-        <div className="cities__right-section">
-          <section className="cities__map map">
-            <Map
-              city={cityLocation}
-              points={getPinsForCurrentCity(cityName, sortedOffers)}
-            />
-          </section>
-        </div>
-      </div>
-    );
-  };
 
   return (
     <>
@@ -83,24 +30,8 @@ const MainPage = ({authorizationStatus, sortedOffers, cityLocation, cityName, is
       </div>
 
       <div className="page page--gray page--main">
-        <header className="header">
-          <div className="container">
-            <div className="header__wrapper">
-              <div className="header__left">
-                <Link to="/" className="header__logo-link header__logo-link--active">
-                  <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
-                </Link>
-              </div>
-              <nav className="header__nav">
-                <ul className="header__nav-list">
-                  <li className="header__nav-item user">
-                    {checkIsUserAuthorized()}
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </header>
+
+        <Header authorizationStatus = {authorizationStatus} />
 
         <main className="page__main page__main--index">
           <h1 className="visually-hidden">Cities</h1>
@@ -110,7 +41,11 @@ const MainPage = ({authorizationStatus, sortedOffers, cityLocation, cityName, is
             </section>
           </div>
           <div className="cities">
-            {checkOffersAmount()}
+            <Cities
+              sortedOffers = {sortedOffers}
+              cityLocation = {cityLocation}
+              cityName = {cityName}
+            />
           </div>
         </main>
       </div>
@@ -142,7 +77,8 @@ MainPage.propTypes = {
   isOffersLoaded: PropTypes.bool.isRequired,
   setOffers: PropTypes.func.isRequired,
   checkAuthorization: PropTypes.func.isRequired,
-  authorizationStatus: PropTypes.bool.isRequired
+  authorizationStatus: PropTypes.bool.isRequired,
+  favorites: PropTypes.array
 };
 
 const mapStateToProps = (state) => {
@@ -151,7 +87,8 @@ const mapStateToProps = (state) => {
     cityLocation: state.cityLocation,
     cityName: state.cityName,
     isOffersLoaded: state.isOffersLoaded,
-    authorizationStatus: state.authorizationStatus
+    authorizationStatus: state.authorizationStatus,
+    favorites: state.favorites
   };
 };
 

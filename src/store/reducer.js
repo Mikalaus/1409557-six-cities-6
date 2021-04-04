@@ -9,7 +9,15 @@ const initialState = {
   activePoint: {},
   authorizationStatus: AuthorizationStatus.NO_AUTH,
   isOffersLoaded: false,
-  sortedOffers: []
+  sortedOffers: [],
+  activeOffer: {},
+  isReviewPosted: false,
+  activeOfferId: 0,
+  isOfferLoaded: false,
+  nearby: [],
+  reviews: [],
+  favorites: [],
+  isFavoritesLoaded: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -50,6 +58,57 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         authorizationStatus: action.payload
+      };
+
+    case ActionType.SET_ACTIVE_OFFER:
+      return {
+        ...state,
+        activeOffer: action.payload,
+        isOfferLoaded: true
+      };
+
+    case ActionType.SET_REVIEWS:
+      return {
+        ...state,
+        reviews: action.payload
+      };
+
+    case ActionType.SET_NEARBY:
+      return {
+        ...state,
+        nearby: action.payload
+      };
+
+    case ActionType.NULLIFUY_IS_OFFER_LOADED:
+      return {
+        ...state,
+        isOfferLoaded: false
+      };
+
+    case ActionType.SET_ACTIVE_OFFER_ID:
+      return {
+        ...state,
+        activeOfferId: action.payload
+      };
+
+    case ActionType.ADD_USER_REVIEW:
+      return {
+        ...state,
+        reviews: [action.payload, ...state.reviews]
+      };
+
+    case ActionType.SET_FAVORITES:
+      return {
+        ...state,
+        favorites: action.payload,
+        isOffersLoaded: false,
+        isOfferLoaded: false
+      };
+
+    case ActionType.REQUIRE_FAVORITES_LOADED:
+      return {
+        ...state,
+        isFavoritesLoaded: action.payload
       };
 
     default:

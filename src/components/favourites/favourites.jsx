@@ -1,45 +1,68 @@
-import React from 'react';
-import PlaceCard from '../universal/place-card';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
+import {getFavorites} from '../../store/api-actions';
+import {connect} from 'react-redux';
+import Spinner from '../spinner/spinner';
+import Header from '../header/header';
+import FavoritesItem from './favorites-item';
 
-const FavouritesPage = ({placesList}) => {
+const FavouritesPage = ({isFavoritesLoaded, authorizationStatus, favorites, getFavoritesList}) => {
 
-  const favouriteList = [];
+  const CITIES = [];
 
-  placesList.forEach((place) => {
-    if (place.isFavorite) {
-      favouriteList.push(place);
+  let citiesOffers = new Map([
+    [`Paris`, []],
+    [`Cologne`, []],
+    [`Brussels`, []],
+    [`Amsterdam`, []],
+    [`Hamburg`, []],
+    [`Dusseldorf`, []],
+  ]
+  );
+
+  const createFavoritesInfo = () => {
+    favorites.forEach((offer) => {
+      if (citiesOffers.has(offer.city.name)) {
+        citiesOffers.get(offer.city.name).push(offer);
+      }
+    });
+
+    for (let city of citiesOffers.keys()) {
+      CITIES.push(city);
     }
-  });
+  };
+
+  useEffect(() => {
+    if (!isFavoritesLoaded) {
+      getFavoritesList();
+    }
+  }, [isFavoritesLoaded]);
+
+  if (!isFavoritesLoaded) {
+    return (
+      <Spinner/>
+    );
+  }
+
+  createFavoritesInfo();
 
   return (
     <>
+      <Header authorizationStatus={authorizationStatus} />
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="#">
-                      <span>Amsterdam</span>
-                    </a>
-                  </div>
-                </div>
-                <div className="favorites__places">
-                  {
-                    favouriteList.map((place) => {
-                      return (
-                        <PlaceCard
-                          place={place}
-                          key={place.id}
-                        />
-                      );
-                    })
+              {
+                CITIES.map((key) => {
+                  if (citiesOffers.get(key).length !== 0) {
+                    return (<FavoritesItem key = {key} city = {key} offers = {citiesOffers.get(key)} />);
                   }
-                </div>
-              </li>
+
+                  return (``);
+                })
+              }
             </ul>
           </section>
         </div>
@@ -49,7 +72,7 @@ const FavouritesPage = ({placesList}) => {
 };
 
 FavouritesPage.propTypes = {
-  placesList: PropTypes.arrayOf(
+  favorites: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number.isRequired,
         isFavorite: PropTypes.bool.isRequired,
@@ -60,7 +83,23 @@ FavouritesPage.propTypes = {
         title: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired
       })
-  )
+  ),
+  isFavoritesLoaded: PropTypes.bool,
+  authorizationStatus: PropTypes.bool,
+  getFavoritesList: PropTypes.func
 };
 
-export default FavouritesPage;
+const mapDispatchToProps = {
+  getFavoritesList: getFavorites
+};
+
+const mapStateToProps = (state) => {
+  return {
+    isFavoritesLoaded: state.isFavoritesLoaded,
+    favorites: state.favorites,
+    authorizationStatus: state.authorizationStatus
+  };
+};
+
+export {FavouritesPage};
+export default connect(mapStateToProps, mapDispatchToProps)(FavouritesPage);

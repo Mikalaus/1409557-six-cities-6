@@ -3,10 +3,13 @@ import PremiumAdvertisement from './premium-advertisement';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import ActionCreator from '../../store/actions';
+import Bookmark from './bookmark';
 
-const PlaceCard = ({place, handleCardMouseOver}) => {
+const PlaceCard = ({place, handleCardMouseOver, setActiveOfferId}) => {
 
-  const {title, previewImage, price, rating, type, isFavourite, isPremium, id} = place;
+  const {title, previewImage, price, rating, type, isFavorite, isPremium, id} = place;
 
   return (
     <article className={`cities__place-card place-card`} onMouseOverCapture = {() => {
@@ -26,12 +29,7 @@ const PlaceCard = ({place, handleCardMouseOver}) => {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={`${isFavourite ? `place-card__bookmark-button--active` : isFavourite} place-card__bookmark-button button`} type="button">
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">{isFavourite ? `To bookmarks` : `In bookmarks`}</span>
-          </button>
+          <Bookmark id = {id} isFavorite = {isFavorite} />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
@@ -40,7 +38,11 @@ const PlaceCard = ({place, handleCardMouseOver}) => {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`}>{title}</Link>
+          <Link to={`/offer/${id}`} onClick = {
+            () => {
+              setActiveOfferId(id);
+            }
+          }>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
@@ -50,7 +52,7 @@ const PlaceCard = ({place, handleCardMouseOver}) => {
 
 PlaceCard.propTypes = {
   place: PropTypes.shape({
-    isFavourite: PropTypes.bool,
+    isFavorite: PropTypes.bool,
     isPremium: PropTypes.bool,
     previewImage: PropTypes.string,
     price: PropTypes.number,
@@ -59,7 +61,15 @@ PlaceCard.propTypes = {
     type: PropTypes.string,
     id: PropTypes.number
   }),
-  handleCardMouseOver: PropTypes.func
+  handleCardMouseOver: PropTypes.func,
+  setActiveOfferId: PropTypes.func
 };
 
-export default PlaceCard;
+const mapDispatchToProps = (dispatch) => ({
+  setActiveOfferId(id) {
+    dispatch(ActionCreator.setActiveOfferId(id));
+  }
+});
+
+export {PlaceCard};
+export default connect(null, mapDispatchToProps)(PlaceCard);
