@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {postFavorites} from '../../store/api-actions';
+import {postFavorites} from '../../../store/api-actions';
 import PropTypes from 'prop-types';
 
 const BookmarkRoomInfoPage = ({addToFavorites, id, isFavorite}) => {

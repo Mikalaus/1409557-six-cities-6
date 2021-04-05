@@ -37,6 +37,9 @@ const SortingOptionsForm = ({offers, city, setSortedOffers}) => {
     setSortedOffers(sortedOffers);
     document.querySelector(`.places__option--active`).classList.remove(`places__option--active`);
     evt.currentTarget.classList.add(`places__option--active`);
+    const popup = document.querySelector(`.places__options--custom`);
+    popup.classList.toggle(`places__options--closed`);
+    popup.classList.toggle(`places__options--opened`);
   };
 
   return (
@@ -87,7 +90,7 @@ SortingOptionsForm.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    offers: state.offers,
+    offers: state.sortedOffers,
     city: state.cityName
   };
 };

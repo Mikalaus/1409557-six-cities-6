@@ -1,6 +1,6 @@
 import {ActionType} from './actions';
 import {getOffersForCurrentCity} from '../utils';
-import {CitiesLocation, AuthorizationStatus} from '../const';
+import {CitiesLocation, AuthorizationStatus} from '../constants';
 
 const initialState = {
   cityName: `Paris`,
@@ -17,7 +17,8 @@ const initialState = {
   nearby: [],
   reviews: [],
   favorites: [],
-  isFavoritesLoaded: false
+  isFavoritesLoaded: false,
+  userInfo: {}
 };
 
 const reducer = (state = initialState, action) => {
@@ -38,7 +39,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         offers: action.payload,
-        sortedOffers: getOffersForCurrentCity(`Paris`, action.payload),
+        sortedOffers: getOffersForCurrentCity(state.cityName, action.payload),
         isOffersLoaded: true
       };
 
@@ -109,6 +110,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isFavoritesLoaded: action.payload
+      };
+
+    case ActionType.SET_USER_INFO:
+      return {
+        ...state,
+        userInfo: action.payload
       };
 
     default:

@@ -1,10 +1,18 @@
-import {login} from '../../store/api-actions';
+import {login, checkAuth} from '../../store/api-actions';
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import browserHistory from '../../browser-history';
 
-const SignInPage = ({onSubmit}) => {
+let isCompleted = false;
+
+const SignInPage = ({onSubmit, cityName, onCheckAuth}) => {
+
+  if (!isCompleted) {
+    onCheckAuth();
+    isCompleted = true;
+  }
+
   const [email, setEmail] = useState(``);
   const [password, setPassword] = useState(``);
 
@@ -42,7 +50,7 @@ const SignInPage = ({onSubmit}) => {
         <section className="locations locations--login locations--current">
           <div className="locations__item">
             <a className="locations__item-link" href="#">
-              <span>Amsterdam</span>
+              <span>{cityName}</span>
             </a>
           </div>
         </section>
@@ -53,11 +61,21 @@ const SignInPage = ({onSubmit}) => {
 
 
 SignInPage.propTypes = {
-  onSubmit: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired,
+  cityName: PropTypes.string.isRequired,
+  onCheckAuth: PropTypes.func.isRequired
 };
 
 const mapDispatchToProps = {
-  onSubmit: login
+  onSubmit: login,
+  onCheckAuth: checkAuth
 };
 
-export default connect(null, mapDispatchToProps)(SignInPage);
+const mapStateToProps = (state) => {
+  return {
+    authorizationStatus: state.authorizationStatus,
+    cityName: state.cityName
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);

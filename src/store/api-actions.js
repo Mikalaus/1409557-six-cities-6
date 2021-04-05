@@ -1,6 +1,7 @@
 import ActionCreator from "./actions";
-import {AuthorizationStatus} from "../const";
-import {adaptOffersToClient, adaptOffer, adaptReview} from '../services/adapter';
+import {AuthorizationStatus} from "../constants";
+import {adaptOffersToClient, adaptOffer, adaptReview, adaptUserInfo} from '../services/adapter';
+import browserHistory from '../browser-history';
 
 export const fetchOffersList = () => (dispatch, _getState, api) => (
   api.get(`hotels`)
@@ -18,12 +19,21 @@ export const fetchOffer = (id) => (dispatch, _getState, api) => (
       dispatch(ActionCreator.setReviews(reviews.data.map(adaptReview)));
       dispatch(ActionCreator.setActiveOffer(adaptOffer(offer.data)));
     })
+  .catch(() => browserHistory.push(`/`))
 );
 
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(`login`)
     .then(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH)))
-    .catch(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.NO_AUTH)))
+    .then(() => browserHistory.push(`/favourites`))
+    .catch(() => browserHistory.push(`/login`))
+);
+
+export const getUserInfo = () => (dispatch, _getState, api) => (
+  api.get(`login`)
+    .then(({data}) => adaptUserInfo(data))
+    .then((userInfo) => dispatch(ActionCreator.setUserInfo(userInfo)))
+    .then(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH)))
 );
 
 export const login = (user) => (dispatch, _getState, api) => (

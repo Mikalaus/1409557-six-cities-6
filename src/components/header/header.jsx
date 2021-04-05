@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import {logout} from '../../store/api-actions';
 import {connect} from 'react-redux';
 
-const Header = ({authorizationStatus, logoutUser}) => {
+const Header = ({authorizationStatus, logoutUser, userInfo}) => {
 
   const checkIsUserAuthorized = () => {
     if (authorizationStatus) {
       return (
         <>
-          <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-          <Link to="/favourites" className="header__user-name user__name">Oliver.conner@gmail.com</Link>
+          <div className="header__avatar-wrapper user__avatar-wrapper" style = {{backgroundImage: `url(${userInfo.avatarUrl})`}}></div>
+          <Link to="/favourites" className="header__user-name user__name">{userInfo.email}</Link>
           <span style={{marginLeft: `30px`}} onClick = {
             () => {
               logoutUser();
@@ -52,14 +52,27 @@ const Header = ({authorizationStatus, logoutUser}) => {
   );
 };
 
+Header.propTypes = {
+  authorizationStatus: PropTypes.bool.isRequired,
+  logoutUser: PropTypes.func.isRequired,
+  userInfo: PropTypes.shape({
+    id: PropTypes.number,
+    email: PropTypes.string,
+    avatarUrl: PropTypes.string,
+    name: PropTypes.string,
+    isPro: PropTypes.bool,
+  })
+};
+
 const mapDispatchToProps = {
   logoutUser: logout
 };
 
-Header.propTypes = {
-  authorizationStatus: PropTypes.bool.isRequired,
-  logoutUser: PropTypes.func.isRequired
+const mapStateToProps = (state) => {
+  return {
+    userInfo: state.userInfo
+  };
 };
 
 export {Header};
-export default connect(null, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

@@ -1,5 +1,5 @@
-const adaptOffer = (offer) => {
-  const adaptedOffer = Object.assign(
+const adaptOffer = (offer) => (
+  Object.assign(
       {},
       {
         bedrooms: offer.bedrooms,
@@ -35,18 +35,15 @@ const adaptOffer = (offer) => {
         title: offer.title,
         type: offer.type
       }
-  );
-  return adaptedOffer;
-};
+  )
+);
 
 const adaptOffersToClient = (offers) => {
-  const adaptedOffers = offers.map(adaptOffer);
-
-  return adaptedOffers;
+  return offers.map(adaptOffer);
 };
 
 const adaptReview = (review) => {
-  const adaptedReview = Object.assign(
+  return Object.assign(
       {},
       {
         comment: review.comment,
@@ -61,7 +58,19 @@ const adaptReview = (review) => {
         }
       }
   );
-  return adaptedReview;
 };
 
-export {adaptOffersToClient, adaptOffer, adaptReview};
+const adaptUserInfo = (userInfo) => {
+  return Object.assign(
+      {},
+      {
+        id: userInfo.id,
+        email: userInfo.email,
+        name: userInfo.name,
+        avatarUrl: userInfo.avatar_url,
+        isPro: userInfo.is_pro,
+      }
+  );
+};
+
+export {adaptOffersToClient, adaptOffer, adaptReview, adaptUserInfo};

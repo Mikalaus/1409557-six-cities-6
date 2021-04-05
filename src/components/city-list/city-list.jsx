@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import ActionCreator from '../../store/actions';
 import {getOffersForCurrentCity} from '../../utils';
-import {CitiesLocation} from '../../const';
+import {CitiesLocation} from '../../constants';
 
 const CityList = ({offers, setActiveCity, cityName}) => {
 

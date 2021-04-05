@@ -4,7 +4,7 @@ import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import reducer from './reducer';
 import ActionCreator from './actions';
-import {AuthorizationStatus} from '../const';
+import {AuthorizationStatus} from '../constants';
 import {redirect} from './middlewares/redirect';
 
 const api = createAPI(

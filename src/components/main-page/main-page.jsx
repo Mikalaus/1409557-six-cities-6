@@ -1,19 +1,18 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import Cities from './cities';
-import CityList from './city-list';
+import Cities from '../cities/cities';
+import CityList from '../city-list/city-list';
 import {connect} from 'react-redux';
-import {checkAuth, fetchOffersList} from '../../store/api-actions';
+import {fetchOffersList, getUserInfo} from '../../store/api-actions';
 import Spinner from '../spinner/spinner';
 import Header from '../header/header';
 
-const MainPage = ({authorizationStatus, sortedOffers, cityLocation, cityName, isOffersLoaded, setOffers, checkAuthorization, favorites}) => {
-
-  checkAuthorization();
+const MainPage = ({authorizationStatus, sortedOffers, cityLocation, cityName, isOffersLoaded, setOffers, favorites, onUserInfo}) => {
 
   useEffect(() => {
     if (!isOffersLoaded) {
       setOffers();
+      onUserInfo();
     }
   }, [isOffersLoaded, favorites]);
 
@@ -76,9 +75,9 @@ MainPage.propTypes = {
   cityName: PropTypes.string.isRequired,
   isOffersLoaded: PropTypes.bool.isRequired,
   setOffers: PropTypes.func.isRequired,
-  checkAuthorization: PropTypes.func.isRequired,
   authorizationStatus: PropTypes.bool.isRequired,
-  favorites: PropTypes.array
+  favorites: PropTypes.array,
+  onUserInfo: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => {
@@ -97,8 +96,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(fetchOffersList());
   },
 
-  checkAuthorization() {
-    dispatch(checkAuth());
+  onUserInfo() {
+    dispatch(getUserInfo());
   }
 });
 

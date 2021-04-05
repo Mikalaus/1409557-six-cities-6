@@ -7,16 +7,27 @@ import {connect} from 'react-redux';
 import ActionCreator from '../../store/actions';
 import Bookmark from './bookmark';
 
-const PlaceCard = ({place, handleCardMouseOver, setActiveOfferId}) => {
+const PlaceCard = ({place, onChangeActiveCard, setActiveOfferId, nullifyIsOfferLoaded, isNearby = false}) => {
 
   const {title, previewImage, price, rating, type, isFavorite, isPremium, id} = place;
 
+  const onMouseEnterCallback = () => {
+    if (!isNearby) {
+      onChangeActiveCard(place.location);
+    }
+  };
+
+  const onMouseOverCallback = () => {
+    if (!isNearby) {
+      onChangeActiveCard(null);
+    }
+  };
+
   return (
-    <article className={`cities__place-card place-card`} onMouseOverCapture = {() => {
-      if (handleCardMouseOver) {
-        handleCardMouseOver(place);
-      }
-    }}>
+    <article className={`cities__place-card place-card`}
+      onMouseEnter={onMouseEnterCallback}
+      onMouseLeave={onMouseOverCallback}
+    >
       {isPremium ? <PremiumAdvertisement /> : isPremium}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="#">
@@ -40,6 +51,7 @@ const PlaceCard = ({place, handleCardMouseOver, setActiveOfferId}) => {
         <h2 className="place-card__name">
           <Link to={`/offer/${id}`} onClick = {
             () => {
+              nullifyIsOfferLoaded();
               setActiveOfferId(id);
             }
           }>{title}</Link>
@@ -52,22 +64,34 @@ const PlaceCard = ({place, handleCardMouseOver, setActiveOfferId}) => {
 
 PlaceCard.propTypes = {
   place: PropTypes.shape({
-    isFavorite: PropTypes.bool,
-    isPremium: PropTypes.bool,
-    previewImage: PropTypes.string,
-    price: PropTypes.number,
-    rating: PropTypes.number,
-    title: PropTypes.string,
-    type: PropTypes.string,
-    id: PropTypes.number
+    isFavorite: PropTypes.bool.isRequired,
+    isPremium: PropTypes.bool.isRequired,
+    previewImage: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    rating: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    location: PropTypes.object.isRequired
   }),
   handleCardMouseOver: PropTypes.func,
-  setActiveOfferId: PropTypes.func
+  setActiveOfferId: PropTypes.func.isRequired,
+  onChangeActiveCard: PropTypes.func.isRequired,
+  nullifyIsOfferLoaded: PropTypes.func.isRequired,
+  isNearby: PropTypes.bool
 };
 
 const mapDispatchToProps = (dispatch) => ({
   setActiveOfferId(id) {
     dispatch(ActionCreator.setActiveOfferId(id));
+  },
+
+  onChangeActiveCard(place) {
+    dispatch(ActionCreator.setActivePointAction(place));
+  },
+
+  nullifyIsOfferLoaded() {
+    dispatch(ActionCreator.nullifyIsOfferLoaded());
   }
 });
 

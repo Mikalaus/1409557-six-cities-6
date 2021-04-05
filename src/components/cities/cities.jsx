@@ -1,8 +1,8 @@
 import React from 'react';
-import MainNoOffers from './main--no-offers';
+import MainNoOffers from '../main-no-offers/main--no-offers';
 import {getPinsForCurrentCity} from '../../utils';
-import SortingOptionsForm from './sorting-options-form';
-import PlaceCardList from './place-card-list';
+import SortingOptionsForm from '../sorting-options-form/sorting-options-form';
+import PlaceCardList from '../place-card-list/place-card-list';
 import Map from '../map/map';
 import PropTypes from 'prop-types';
 
@@ -12,6 +12,7 @@ const Cities = ({sortedOffers, cityName, cityLocation}) => {
       <MainNoOffers />
     );
   }
+
   return (
     <div className="cities__places-container container">
       <section className="cities__places places">

@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {getFavorites} from '../../store/api-actions';
+import {getFavorites, getUserInfo} from '../../store/api-actions';
 import {connect} from 'react-redux';
 import Spinner from '../spinner/spinner';
 import Header from '../header/header';
@@ -32,6 +32,14 @@ const FavouritesPage = ({isFavoritesLoaded, authorizationStatus, favorites, getF
     }
   };
 
+  const renderFavouritesItems = (key) => {
+    if (citiesOffers.get(key).length !== 0) {
+      return (<FavoritesItem key = {key} city = {key} offers = {citiesOffers.get(key)} />);
+    }
+
+    return (``);
+  };
+
   useEffect(() => {
     if (!isFavoritesLoaded) {
       getFavoritesList();
@@ -55,13 +63,7 @@ const FavouritesPage = ({isFavoritesLoaded, authorizationStatus, favorites, getF
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
               {
-                CITIES.map((key) => {
-                  if (citiesOffers.get(key).length !== 0) {
-                    return (<FavoritesItem key = {key} city = {key} offers = {citiesOffers.get(key)} />);
-                  }
-
-                  return (``);
-                })
+                CITIES.map(renderFavouritesItems)
               }
             </ul>
           </section>
@@ -90,7 +92,8 @@ FavouritesPage.propTypes = {
 };
 
 const mapDispatchToProps = {
-  getFavoritesList: getFavorites
+  getFavoritesList: getFavorites,
+  onUserInfo: getUserInfo
 };
 
 const mapStateToProps = (state) => {

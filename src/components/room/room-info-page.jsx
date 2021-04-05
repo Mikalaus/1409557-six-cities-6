@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
-import PhotoGallery from './photo-galery';
+import PhotoGallery from '../photo-gallery/photo-galery';
 import CommentForm from '../comment-form/comment-form';
 import PropTypes from 'prop-types';
-import ReviewList from './review-list';
+import ReviewList from '../review-list/review-list';
 import PlaceCard from '../universal/place-card';
 import Map from '../map/map';
 import {countRating, getPinsForCurrentCity} from '../../utils';
@@ -11,9 +11,9 @@ import {connect} from 'react-redux';
 import Spinner from '../spinner/spinner';
 import PremiumAdvertisement from '../universal/premium-advertisement';
 import ActionCreator from '../../store/actions';
-import PropertiesList from './property-list';
+import PropertiesList from '../property-list/property-list';
 import Header from '../header/header';
-import BookmarkRoomInfoPage from './bookmark-room-info-page';
+import BookmarkRoomInfoPage from './bookmark-room-info-page/bookmark-room-info-page';
 
 const RoomInfoPage = ({id, offer, isOfferLoaded, setActiveOffer, cityName, cityLocation, isAuthorized, nearby, reviews, setActivePoint, nullifyIsOfferLoaded, favorites}) => {
 
@@ -120,6 +120,7 @@ const RoomInfoPage = ({id, offer, isOfferLoaded, setActiveOffer, cityName, cityL
                     <PlaceCard
                       place={place}
                       key={place.id}
+                      isNearby = {true}
                     />
                   );
                 })

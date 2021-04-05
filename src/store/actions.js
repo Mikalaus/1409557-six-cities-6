@@ -14,7 +14,8 @@ const ActionType = {
   ADD_USER_REVIEW: `room-info-page/addUserReview`,
   SET_FAVORITES: `favorites/setFavorites`,
   REQUIRE_FAVORITES_LOADED: `favorites/requireFavoritesLoaded`,
-  CHANGE_FAVORITE_STATUS: `place-card/changeFavoriteStatus`
+  CHANGE_FAVORITE_STATUS: `place-card/changeFavoriteStatus`,
+  SET_USER_INFO: `header/setUserInfo`
 };
 
 const ActionCreator = {
@@ -25,7 +26,7 @@ const ActionCreator = {
   setActivePointAction: (point) => ({type: ActionType.SET_ACTIVE_POINT, payload: point}),
   requireAuthorization: (status) => ({type: ActionType.REQUIRED_AUTHORIZATION, payload: status}),
   redirectToRoute: (url) => ({type: ActionType.REDIRECT_TO_ROUTE, payload: url}),
-  setActiveOffer: (offer) => ({type: ActionType.SET_ACTIVE_OFFER, payload: offer}),
+  setActiveOffer: (id) => ({type: ActionType.SET_ACTIVE_OFFER, payload: id}),
   setNearby: (nearby) => ({type: ActionType.SET_NEARBY, payload: nearby}),
   setReviews: (reviews) => ({type: ActionType.SET_REVIEWS, payload: reviews}),
   nullifyIsOfferLoaded: () => ({type: ActionType.NULLIFUY_IS_OFFER_LOADED}),
@@ -33,7 +34,8 @@ const ActionCreator = {
   addUserReview: (review) => ({type: ActionType.ADD_USER_REVIEW, payload: review}),
   setFavorites: (favorites) => ({type: ActionType.SET_FAVORITES, payload: favorites}),
   requireFavoritesLoaded: (status) => ({type: ActionType.REQUIRE_FAVORITES_LOADED, payload: status}),
-  changeFavoriteStatus: (offer) => ({type: ActionType.CHANGE_FAVORITE_STATUS, payload: offer})
+  changeFavoriteStatus: (offer) => ({type: ActionType.CHANGE_FAVORITE_STATUS, payload: offer}),
+  setUserInfo: (info) => ({type: ActionType.SET_USER_INFO, payload: info})
 };
 
 export default ActionCreator;

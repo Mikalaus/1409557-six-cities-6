@@ -6,7 +6,7 @@ const getPinsForCurrentCity = (activeCity, offers) => {
   const pinsForCurrentCity = [];
   offers.forEach((place) => {
     if (place.city.name === activeCity) {
-      pinsForCurrentCity.push(place.location);
+      pinsForCurrentCity.push({location: place.location, title: place.title});
     }
   });
   return pinsForCurrentCity;

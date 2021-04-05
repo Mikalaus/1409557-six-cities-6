@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const CommentForm = ({id, postComment}) => {
 
-  const [rating, setRating] = useState();
+  const [rating, setRating] = useState(null);
 
   const [comment, setComment] = useState(``);
 
@@ -14,6 +14,8 @@ const CommentForm = ({id, postComment}) => {
       (evt) => {
         evt.preventDefault();
         postComment(id, {rating, comment});
+        setComment(``);
+        setRating(null);
         document.querySelector(`.reviews__form`).reset();
       }
     }>
@@ -71,7 +73,7 @@ const CommentForm = ({id, postComment}) => {
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled="">Submit</button>
+        <button className="reviews__submit form__submit button" type="submit" disabled={`${comment.length > 49 && comment.length < 301 && rating !== null ? `` : `disabled`}`}>Submit</button>
       </div>
     </form>
   );
