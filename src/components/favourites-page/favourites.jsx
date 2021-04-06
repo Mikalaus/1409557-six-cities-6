@@ -107,11 +107,11 @@ const mapDispatchToProps = {
   onUserInfo: getUserInfo
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({FAVORITES, USER}) => {
   return {
-    isFavoritesLoaded: state.isFavoritesLoaded,
-    favorites: state.favorites,
-    authorizationStatus: state.authorizationStatus
+    isFavoritesLoaded: FAVORITES.isFavoritesLoaded,
+    favorites: FAVORITES.favorites,
+    authorizationStatus: USER.authorizationStatus
   };
 };
 

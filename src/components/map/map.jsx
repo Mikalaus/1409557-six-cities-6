@@ -76,9 +76,9 @@ Map.propTypes = {
   )
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({MAIN}) => {
   return {
-    activePoint: state.activePoint,
+    activePoint: MAIN.activePoint,
   };
 };
 

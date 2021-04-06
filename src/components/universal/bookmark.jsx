@@ -36,10 +36,10 @@ Bookmark.propTypes = {
   authorizationStatus: PropTypes.bool
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({MAIN, USER}) => {
   return {
-    offers: state.offers,
-    authorizationStatus: state.authorizationStatus
+    offers: MAIN.offers,
+    authorizationStatus: USER.authorizationStatus
   };
 };
 

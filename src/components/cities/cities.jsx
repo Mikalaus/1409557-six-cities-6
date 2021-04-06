@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import MainNoOffers from '../main-no-offers/main--no-offers';
 import {getPinsForCurrentCity} from '../../utils';
 import SortingOptionsForm from '../sorting-options-form/sorting-options-form';
@@ -62,4 +62,4 @@ Cities.propTypes = {
   cityName: PropTypes.string.isRequired
 };
 
-export default Cities;
+export default memo(Cities);

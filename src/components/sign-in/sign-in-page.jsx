@@ -91,10 +91,10 @@ const mapDispatchToProps = {
   onCheckAuth: checkAuth
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({USER, MAIN}) => {
   return {
-    authorizationStatus: state.authorizationStatus,
-    cityName: state.cityName
+    authorizationStatus: USER.authorizationStatus,
+    cityName: MAIN.cityName
   };
 };
 

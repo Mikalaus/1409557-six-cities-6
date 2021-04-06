@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import PlaceCard from '../universal/place-card';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import ActionCreator from '../../store/actions';
+import {setActivePointAction} from '../../store/actions';
 
 const PlaceCardList = ({offers, setActivePoint}) => {
 
@@ -48,13 +48,13 @@ PlaceCardList.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   setActivePoint(point) {
-    dispatch(ActionCreator.setActivePointAction(point));
+    dispatch(setActivePointAction(point));
   }
 });
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({MAIN}) => {
   return {
-    offers: state.sortedOffers
+    offers: MAIN.sortedOffers
   };
 };
 

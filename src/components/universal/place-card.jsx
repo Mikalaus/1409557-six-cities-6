@@ -1,17 +1,17 @@
 import {countRating} from '../../utils';
 import PremiumAdvertisement from './premium-advertisement';
-import React from 'react';
+import React, {memo} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
-import ActionCreator from '../../store/actions';
+import {setActiveOfferId, setActivePointAction, nullifyIsOfferLoaded} from '../../store/actions';
 import Bookmark from './bookmark';
 
 const PlaceCard = ({
   place,
   onChangeActiveCard,
-  setActiveOfferId,
-  nullifyIsOfferLoaded,
+  onActiveOfferId,
+  nullifyOfferLoaded,
   isNearby = false
 }) => {
 
@@ -39,8 +39,8 @@ const PlaceCard = ({
   };
 
   const linkClickHandler = () => {
-    nullifyIsOfferLoaded();
-    setActiveOfferId(id);
+    nullifyOfferLoaded();
+    onActiveOfferId(id);
   };
 
   return (
@@ -96,25 +96,25 @@ PlaceCard.propTypes = {
     location: PropTypes.object.isRequired
   }),
   handleCardMouseOver: PropTypes.func,
-  setActiveOfferId: PropTypes.func.isRequired,
+  onActiveOfferId: PropTypes.func.isRequired,
   onChangeActiveCard: PropTypes.func.isRequired,
-  nullifyIsOfferLoaded: PropTypes.func.isRequired,
+  nullifyOfferLoaded: PropTypes.func.isRequired,
   isNearby: PropTypes.bool
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  setActiveOfferId(id) {
-    dispatch(ActionCreator.setActiveOfferId(id));
+  onActiveOfferId(id) {
+    dispatch(setActiveOfferId(id));
   },
 
   onChangeActiveCard(place) {
-    dispatch(ActionCreator.setActivePointAction(place));
+    dispatch(setActivePointAction(place));
   },
 
-  nullifyIsOfferLoaded() {
-    dispatch(ActionCreator.nullifyIsOfferLoaded());
+  nullifyOfferLoaded() {
+    dispatch(nullifyIsOfferLoaded());
   }
 });
 
 export {PlaceCard};
-export default connect(null, mapDispatchToProps)(PlaceCard);
+export default memo(connect(null, mapDispatchToProps)(PlaceCard));

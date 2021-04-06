@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {logout} from '../../store/api-actions';
@@ -71,9 +71,9 @@ const mapDispatchToProps = {
   logoutUser: logout
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({USER}) => {
   return {
-    userInfo: state.userInfo
+    userInfo: USER.userInfo
   };
 };
 
@@ -88,4 +88,4 @@ Header.propTypes = {
 };
 
 export {Header};
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default memo(connect(mapStateToProps, mapDispatchToProps)(Header));

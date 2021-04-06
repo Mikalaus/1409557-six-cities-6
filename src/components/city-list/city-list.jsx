@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import ActionCreator from '../../store/actions';
+import {setCityNameAction, setCityLocationAction, setSortedOffersAction} from '../../store/actions';
 import {getOffersForCurrentCity} from '../../utils';
 import {CitiesLocation} from '../../constants';
 
@@ -105,16 +105,16 @@ CityList.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   setActiveCity(city, offers) {
-    dispatch(ActionCreator.setCityNameAction(city));
-    dispatch(ActionCreator.setCityLocationAction(CitiesLocation.get(city)));
-    dispatch(ActionCreator.setSortedOffersAction(getOffersForCurrentCity(city, offers)));
+    dispatch(setCityNameAction(city));
+    dispatch(setCityLocationAction(CitiesLocation.get(city)));
+    dispatch(setSortedOffersAction(getOffersForCurrentCity(city, offers)));
   }
 });
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({MAIN}) => {
   return {
-    offers: state.offers,
-    cityName: state.cityName
+    offers: MAIN.offers,
+    cityName: MAIN.cityName
   };
 };
 

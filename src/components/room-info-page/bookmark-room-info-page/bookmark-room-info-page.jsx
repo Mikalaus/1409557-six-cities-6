@@ -30,9 +30,9 @@ BookmarkRoomInfoPage.propTypes = {
   isFavorite: PropTypes.bool
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({MAIN}) => {
   return {
-    offers: state.offers
+    offers: MAIN.offers
   };
 };
 

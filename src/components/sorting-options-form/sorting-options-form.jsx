@@ -1,5 +1,5 @@
-import React from 'react';
-import ActionCreator from '../../store/actions';
+import React, {memo} from 'react';
+import {setSortedOffersAction} from '../../store/actions';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {getOffersForCurrentCity} from '../../utils';
@@ -109,18 +109,18 @@ SortingOptionsForm.propTypes = {
   setSortedOffers: PropTypes.func
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({MAIN}) => {
   return {
-    offers: state.sortedOffers,
-    city: state.cityName
+    offers: MAIN.sortedOffers,
+    city: MAIN.cityName
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   setSortedOffers(offers) {
-    dispatch(ActionCreator.setSortedOffersAction(offers));
+    dispatch(setSortedOffersAction(offers));
   }
 });
 
 export {SortingOptionsForm};
-export default connect(mapStateToProps, mapDispatchToProps)(SortingOptionsForm);
+export default memo(connect(mapStateToProps, mapDispatchToProps)(SortingOptionsForm));

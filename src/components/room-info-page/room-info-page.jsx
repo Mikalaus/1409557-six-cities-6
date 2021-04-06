@@ -10,7 +10,7 @@ import {fetchOffer} from '../../store/api-actions';
 import {connect} from 'react-redux';
 import Spinner from '../spinner/spinner';
 import PremiumAdvertisement from '../universal/premium-advertisement';
-import ActionCreator from '../../store/actions';
+import {nullifyIsOfferLoaded, setActivePointAction} from '../../store/actions';
 import PropertiesList from '../property-list/property-list';
 import Header from '../header/header';
 import BookmarkRoomInfoPage from './bookmark-room-info-page/bookmark-room-info-page';
@@ -26,7 +26,7 @@ const RoomInfoPage = ({
   nearby,
   reviews,
   setActivePoint,
-  nullifyIsOfferLoaded,
+  nullifyOfferLoaded,
   favorites
 }) => {
 
@@ -43,7 +43,7 @@ const RoomInfoPage = ({
   }
 
   window.addEventListener(`popstate`, () => {
-    nullifyIsOfferLoaded();
+    nullifyOfferLoaded();
   });
 
   return (
@@ -199,21 +199,21 @@ RoomInfoPage.propTypes = {
   nearby: PropTypes.array,
   reviews: PropTypes.array,
   setActivePoint: PropTypes.func,
-  nullifyIsOfferLoaded: PropTypes.func,
+  nullifyOfferLoaded: PropTypes.func,
   favorites: PropTypes.array
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({MAIN, OFFER, USER, FAVORITES}) => {
   return {
-    offer: state.activeOffer,
-    isOfferLoaded: state.isOfferLoaded,
-    cityName: state.cityName,
-    cityLocation: state.cityLocation,
-    isAuthorized: state.authorizationStatus,
-    nearby: state.nearby,
-    reviews: state.reviews,
-    id: state.activeOfferId,
-    favorites: state.favorites
+    offer: OFFER.activeOffer,
+    isOfferLoaded: OFFER.isOfferLoaded,
+    cityName: MAIN.cityName,
+    cityLocation: MAIN.cityLocation,
+    isAuthorized: USER.authorizationStatus,
+    nearby: OFFER.nearby,
+    reviews: OFFER.reviews,
+    id: OFFER.activeOfferId,
+    favorites: FAVORITES.favorites
   };
 };
 
@@ -223,11 +223,11 @@ const mapDispatchToProps = (dispatch) => ({
   },
 
   setActivePoint(point) {
-    dispatch(ActionCreator.setActivePointAction(point));
+    dispatch(setActivePointAction(point));
   },
 
-  nullifyIsOfferLoaded() {
-    dispatch(ActionCreator.nullifyIsOfferLoaded());
+  nullifyOfferLoaded() {
+    dispatch(nullifyIsOfferLoaded());
   }
 });
 

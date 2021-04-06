@@ -3,12 +3,12 @@ import {composeWithDevTools} from 'redux-devtools-extension';
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import reducer from './reducer';
-import ActionCreator from './actions';
+import {requireAuthorization} from './actions';
 import {AuthorizationStatus} from '../constants';
 import {redirect} from './middlewares/redirect';
 
 const api = createAPI(
-    () => store.dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.NO_AUTH))
+    () => store.dispatch(requireAuthorization(AuthorizationStatus.NO_AUTH))
 );
 
 const store = createStore(

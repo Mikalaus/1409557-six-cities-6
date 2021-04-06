@@ -105,14 +105,14 @@ MainPage.propTypes = {
   onUserInfo: PropTypes.func.isRequired
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({MAIN, FAVORITES, USER}) => {
   return {
-    sortedOffers: state.sortedOffers,
-    cityLocation: state.cityLocation,
-    cityName: state.cityName,
-    isOffersLoaded: state.isOffersLoaded,
-    authorizationStatus: state.authorizationStatus,
-    favorites: state.favorites
+    sortedOffers: MAIN.sortedOffers,
+    cityLocation: MAIN.cityLocation,
+    cityName: MAIN.cityName,
+    isOffersLoaded: MAIN.isOffersLoaded,
+    authorizationStatus: USER.authorizationStatus,
+    favorites: FAVORITES.favorites
   };
 };
 
