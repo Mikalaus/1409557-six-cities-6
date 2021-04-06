@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import PhotoGallery from '../photo-gallery/photo-galery';
 import CommentForm from '../comment-form/comment-form';
 import PropTypes from 'prop-types';
-import ReviewList from '../review-item/review-list';
+import ReviewList from '../review-list/review-list';
 import PlaceCard from '../universal/place-card';
 import Map from '../map/map';
 import {countRating, getPinsForCurrentCity} from '../../utils';

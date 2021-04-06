@@ -4,7 +4,7 @@ import MainPage from '../main-page/main-page';
 import {Switch, Route, Router as BrowserRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Error404Page from '../error-404-page/error-404-page';
-import RoomInfoPage from '../room/room-info-page';
+import RoomInfoPage from '../room-info-page/room-info-page';
 import FavouritesPage from '../favourites-page/favourites';
 import PrivateRoute from '../private-route/private-route';
 import browserHistory from '../../browser-history';

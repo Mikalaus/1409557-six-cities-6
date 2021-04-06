@@ -12,8 +12,7 @@ const BookmarkRoomInfoPage = ({addToFavorites, id, isFavorite}) => {
   return (
     <button
       className={
-        `${isFavorite ? `property__bookmark-button--active` : isFavorite}
-        property__bookmark-button button`}
+        `${isFavorite ? `property__bookmark-button--active` : isFavorite} property__bookmark-button button`}
       type="button"
       onClick = {buttonClickHandler}
     >

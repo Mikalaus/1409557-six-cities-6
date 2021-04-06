@@ -1,17 +1,14 @@
 import {login, checkAuth} from '../../store/api-actions';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import browserHistory from '../../browser-history';
 
-let isCompleted = false;
-
 const SignInPage = ({onSubmit, cityName, onCheckAuth}) => {
 
-  if (!isCompleted) {
+  useEffect(() => {
     onCheckAuth();
-    isCompleted = true;
-  }
+  }, []);
 
   const [email, setEmail] = useState(``);
   const [password, setPassword] = useState(``);
