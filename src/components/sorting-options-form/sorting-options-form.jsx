@@ -33,10 +33,19 @@ const SortTypes = {
 
 const SortingOptionsForm = ({offers, city, setSortedOffers}) => {
 
-  const clickHandler = (sortedOffers) => (evt) => {
+  const SORT_TYPE_NAME = document.querySelector(`.places__sorting-type`);
+
+  const sortTypeClickHandler = (sortedOffers, sortName) => (evt) => {
     setSortedOffers(sortedOffers);
     document.querySelector(`.places__option--active`).classList.remove(`places__option--active`);
     evt.currentTarget.classList.add(`places__option--active`);
+    const popup = document.querySelector(`.places__options--custom`);
+    popup.classList.toggle(`places__options--closed`);
+    popup.classList.toggle(`places__options--opened`);
+    SORT_TYPE_NAME.textContent = sortName;
+  };
+
+  const formSubmitHandler = () => {
     const popup = document.querySelector(`.places__options--custom`);
     popup.classList.toggle(`places__options--closed`);
     popup.classList.toggle(`places__options--opened`);
@@ -45,11 +54,7 @@ const SortingOptionsForm = ({offers, city, setSortedOffers}) => {
   return (
     <>
       <form className="places__sorting" action="#" method="get">
-        <div onClick={() => {
-          const popup = document.querySelector(`.places__options--custom`);
-          popup.classList.toggle(`places__options--closed`);
-          popup.classList.toggle(`places__options--opened`);
-        }}>
+        <div onClick={formSubmitHandler}>
           <span className="places__sorting-caption" >Sort by</span>
           <span className="places__sorting-type" tabIndex="0">
             Popular
@@ -60,10 +65,26 @@ const SortingOptionsForm = ({offers, city, setSortedOffers}) => {
         </div>
 
         <ul className="places__options places__options--custom places__options--closed">
-          <li className="places__option places__option--active" tabIndex="0" onClick={clickHandler(SortTypes.popular(city, [...offers]))}>Popular</li>
-          <li className="places__option" tabIndex="0" onClick={clickHandler(SortTypes.priceHighToLow([...offers]))}>Price: high to low</li>
-          <li className="places__option" tabIndex="0" onClick={clickHandler(SortTypes.priceLowToHigh([...offers]))}>Price: low to high</li>
-          <li className="places__option" tabIndex="0" onClick={clickHandler(SortTypes.topRated([...offers]))}>Top rated first</li>
+          <li
+            className="places__option places__option--active"
+            tabIndex="0"
+            onClick={sortTypeClickHandler(SortTypes.popular(city, [...offers]), `Popular`)}
+          >Popular</li>
+          <li
+            className="places__option"
+            tabIndex="0"
+            onClick={sortTypeClickHandler(SortTypes.priceHighToLow([...offers]), `Price: high to low`)}
+          >Price: high to low</li>
+          <li
+            className="places__option"
+            tabIndex="0"
+            onClick={sortTypeClickHandler(SortTypes.priceLowToHigh([...offers]), `Price: low to high`)}
+          >Price: low to high</li>
+          <li
+            className="places__option"
+            tabIndex="0"
+            onClick={sortTypeClickHandler(SortTypes.topRated([...offers]), `Top rated first`)}
+          >Top rated first</li>
         </ul>
 
       </form>

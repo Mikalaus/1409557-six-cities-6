@@ -6,10 +6,12 @@ const ReviewList = ({reviewList}) => {
 
   return (
     <>
-      <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviewList.length}</span></h2>
+      <h2 className="reviews__title">
+        Reviews &middot; <span className="reviews__amount">{reviewList.length}</span>
+      </h2>
       <ul className="reviews__list">
         {
-          reviewList.reverse().map((review) => {
+          reviewList.slice(-10).reverse().map((review) => {
             return (
               <ReviewItem
                 key={review.id}

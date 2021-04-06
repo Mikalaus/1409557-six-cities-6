@@ -7,9 +7,24 @@ import {connect} from 'react-redux';
 import ActionCreator from '../../store/actions';
 import Bookmark from './bookmark';
 
-const PlaceCard = ({place, onChangeActiveCard, setActiveOfferId, nullifyIsOfferLoaded, isNearby = false}) => {
+const PlaceCard = ({
+  place,
+  onChangeActiveCard,
+  setActiveOfferId,
+  nullifyIsOfferLoaded,
+  isNearby = false
+}) => {
 
-  const {title, previewImage, price, rating, type, isFavorite, isPremium, id} = place;
+  const {
+    title,
+    previewImage,
+    price,
+    rating,
+    type,
+    isFavorite,
+    isPremium,
+    id
+  } = place;
 
   const onMouseEnterCallback = () => {
     if (!isNearby) {
@@ -23,6 +38,11 @@ const PlaceCard = ({place, onChangeActiveCard, setActiveOfferId, nullifyIsOfferL
     }
   };
 
+  const linkClickHandler = () => {
+    nullifyIsOfferLoaded();
+    setActiveOfferId(id);
+  };
+
   return (
     <article className={`cities__place-card place-card`}
       onMouseEnter={onMouseEnterCallback}
@@ -30,9 +50,15 @@ const PlaceCard = ({place, onChangeActiveCard, setActiveOfferId, nullifyIsOfferL
     >
       {isPremium ? <PremiumAdvertisement /> : isPremium}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
-          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place image"/>
-        </a>
+        <Link to={`/offer/${id}`} onClick = {linkClickHandler}>
+          <img
+            className="place-card__image"
+            src={previewImage}
+            width="260"
+            height="200"
+            alt="Place image"
+          />
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
@@ -50,10 +76,7 @@ const PlaceCard = ({place, onChangeActiveCard, setActiveOfferId, nullifyIsOfferL
         </div>
         <h2 className="place-card__name">
           <Link to={`/offer/${id}`} onClick = {
-            () => {
-              nullifyIsOfferLoaded();
-              setActiveOfferId(id);
-            }
+            
           }>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>

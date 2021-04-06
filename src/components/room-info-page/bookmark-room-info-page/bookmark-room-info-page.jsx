@@ -5,12 +5,18 @@ import PropTypes from 'prop-types';
 
 const BookmarkRoomInfoPage = ({addToFavorites, id, isFavorite}) => {
 
+  const buttonClickHandler = () => {
+    addToFavorites(id, !isFavorite);
+  };
+
   return (
-    <button className={`${isFavorite ? `property__bookmark-button--active` : isFavorite} property__bookmark-button button`} type="button" onClick = {
-      () => {
-        addToFavorites(id, !isFavorite);
-      }
-    }>
+    <button
+      className={
+        `${isFavorite ? `property__bookmark-button--active` : isFavorite}
+        property__bookmark-button button`}
+      type="button"
+      onClick = {buttonClickHandler}
+    >
       <svg className="property__bookmark-icon" width="31" height="33">
         <use xlinkHref="#icon-bookmark"></use>
       </svg>

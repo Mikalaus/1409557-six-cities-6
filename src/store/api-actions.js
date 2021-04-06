@@ -19,13 +19,13 @@ export const fetchOffer = (id) => (dispatch, _getState, api) => (
       dispatch(ActionCreator.setReviews(reviews.data.map(adaptReview)));
       dispatch(ActionCreator.setActiveOffer(adaptOffer(offer.data)));
     })
-  .catch(() => browserHistory.push(`/`))
+  .catch(() => browserHistory.push(`/error-404-page`))
 );
 
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(`login`)
     .then(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH)))
-    .then(() => browserHistory.push(`/favourites`))
+    .then(() => browserHistory.push(`/`))
     .catch(() => browserHistory.push(`/login`))
 );
 

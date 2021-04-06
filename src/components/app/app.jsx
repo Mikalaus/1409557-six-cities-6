@@ -23,7 +23,7 @@ const App = () => (
 
       <PrivateRoute
         exact
-        path="/favourites"
+        path="/favorites"
         render={() => <FavouritesPage/>}
       >
       </PrivateRoute>

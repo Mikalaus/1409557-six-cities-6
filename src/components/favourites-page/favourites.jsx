@@ -6,7 +6,17 @@ import Spinner from '../spinner/spinner';
 import Header from '../header/header';
 import FavoritesItem from './favorites-item';
 
-const FavouritesPage = ({isFavoritesLoaded, authorizationStatus, favorites, getFavoritesList}) => {
+const FavouritesPage = ({
+  isFavoritesLoaded,
+  authorizationStatus,
+  favorites,
+  getFavoritesList,
+  onUserInfo
+}) => {
+
+  useEffect(() => {
+    onUserInfo();
+  }, [authorizationStatus]);
 
   const CITIES = [];
 
@@ -88,7 +98,8 @@ FavouritesPage.propTypes = {
   ),
   isFavoritesLoaded: PropTypes.bool,
   authorizationStatus: PropTypes.bool,
-  getFavoritesList: PropTypes.func
+  getFavoritesList: PropTypes.func,
+  onUserInfo: PropTypes.func
 };
 
 const mapDispatchToProps = {

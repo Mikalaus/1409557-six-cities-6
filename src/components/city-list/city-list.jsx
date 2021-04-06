@@ -17,32 +17,68 @@ const CityList = ({offers, setActiveCity, cityName}) => {
   return (
     <ul className="locations__list tabs__list">
       <li className="locations__item">
-        <a className={`locations__item-link tabs__item ${cityName === `Paris` ? `tabs__item--active` : ``}`} href="#" onClick={clickHandler(`Paris`)}>
+        <a
+          className={
+            `locations__item-link tabs__item ${cityName === `Paris` ? `tabs__item--active` : ``}`
+          }
+          href="#"
+          onClick={clickHandler(`Paris`)}
+        >
           <span>Paris</span>
         </a>
       </li>
       <li className="locations__item">
-        <a className={`locations__item-link tabs__item ${cityName === `Cologne` ? `tabs__item--active` : ``}`} href="#" onClick={clickHandler(`Cologne`)}>
+        <a
+          className={
+            `locations__item-link tabs__item ${cityName === `Cologne` ? `tabs__item--active` : ``}`
+          }
+          href="#"
+          onClick={clickHandler(`Cologne`)}
+        >
           <span>Cologne</span>
         </a>
       </li>
       <li className="locations__item">
-        <a className={`locations__item-link tabs__item ${cityName === `Brussels` ? `tabs__item--active` : ``}`} href="#" onClick={clickHandler(`Brussels`)}>
+        <a
+          className={
+            `locations__item-link tabs__item ${cityName === `Brussels` ? `tabs__item--active` : ``}`
+          }
+          href="#"
+          onClick={clickHandler(`Brussels`)}
+        >
           <span>Brussels</span>
         </a>
       </li>
       <li className="locations__item">
-        <a className={`locations__item-link tabs__item ${cityName === `Amsterdam` ? `tabs__item--active` : ``}`} href="#" onClick={clickHandler(`Amsterdam`)}>
+        <a
+          className={
+            `locations__item-link tabs__item ${cityName === `Amsterdam` ? `tabs__item--active` : ``}`
+          }
+          href="#"
+          onClick={clickHandler(`Amsterdam`)}
+        >
           <span>Amsterdam</span>
         </a>
       </li>
       <li className="locations__item">
-        <a className={`locations__item-link tabs__item ${cityName === `Hamburg` ? `tabs__item--active` : ``}`} href="#" onClick={clickHandler(`Hamburg`)}>
+        <a
+          className={
+            `locations__item-link tabs__item ${cityName === `Hamburg` ? `tabs__item--active` : ``}`
+          }
+          href="#"
+          onClick={clickHandler(`Hamburg`)}
+        >
           <span>Hamburg</span>
         </a>
       </li>
       <li className="locations__item">
-        <a className={`locations__item-link tabs__item ${cityName === `Dusseldorf` ? `tabs__item--active` : ``}`} href="#" onClick={clickHandler(`Dusseldorf`)}>
+        <a
+          className={
+            `locations__item-link tabs__item ${cityName === `Dusseldorf` ? `tabs__item--active` : ``}`
+          }
+          href="#"
+          onClick={clickHandler(`Dusseldorf`)}
+        >
           <span>Dusseldorf</span>
         </a>
       </li>

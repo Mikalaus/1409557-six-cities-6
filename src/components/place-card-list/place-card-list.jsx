@@ -18,19 +18,15 @@ const PlaceCardList = ({offers, setActivePoint}) => {
   };
 
   return (
-    <>
-      {
-        offers.map((place) => {
-          return (
-            <PlaceCard
-              place={place}
-              handleCardMouseOver={handleCardMouseOver}
-              key={place.id}
-            />
-          );
-        })
-      }
-    </>
+    offers.map((place) => {
+      return (
+        <PlaceCard
+          place={place}
+          handleCardMouseOver={handleCardMouseOver}
+          key={place.id}
+        />
+      );
+    })
   );
 };
 
