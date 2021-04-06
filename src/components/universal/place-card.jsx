@@ -75,9 +75,7 @@ const PlaceCard = ({
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`} onClick = {
-            
-          }>{title}</Link>
+          <Link to={`/offer/${id}`} onClick = {linkClickHandler}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
