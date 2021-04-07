@@ -16,7 +16,7 @@ const Bookmark = ({addToFavorites, id, authorizationStatus}) => {
       addToFavorites(id, !offer.isFavorite);
       offer.isFavorite = !offer.isFavorite;
     } else {
-      browserHistory.push(`login`);
+      browserHistory.push(`/login`);
     }
   };
 

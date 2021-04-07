@@ -2,7 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import leaflet from 'leaflet';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {getActivePoint, getOffers} from '../../store/main-page-data/selectors';
+import {getActivePoint} from '../../store/main-page-data/selectors';
 import {getActiveOfferId} from '../../store/room-info-page-data/selectors';
 
 import 'leaflet/dist/leaflet.css';
@@ -116,8 +116,7 @@ Map.propTypes = {
 const mapStateToProps = (state) => {
   return {
     activePoint: getActivePoint(state),
-    activeCardId: getActiveOfferId(state),
-    cards: getOffers(state)
+    activeCardId: getActiveOfferId(state)
   };
 };
 

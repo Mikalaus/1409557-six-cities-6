@@ -7,6 +7,7 @@ import Header from '../header/header';
 import FavoritesItem from './favorites-item';
 import {getFavoritesSelector, getLoadedFavoritesStatus} from '../../store/favorites-data/selectors';
 import {getAuthorizationStatus} from '../../store/user-info-data/selectors';
+import FavoritesNoOffers from '../favorites-no-offers/favorites-no-offers';
 
 const FavouritesPage = ({
   isFavoritesLoaded,
@@ -66,6 +67,14 @@ const FavouritesPage = ({
 
   createFavoritesInfo();
 
+  const checkFavorites = () => {
+    if (favorites.length !== 0) {
+      return CITIES.map(renderFavouritesItems);
+    } else {
+      return (<FavoritesNoOffers />);
+    }
+  };
+
   return (
     <>
       <Header authorizationStatus={authorizationStatus} />
@@ -75,7 +84,7 @@ const FavouritesPage = ({
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
               {
-                CITIES.map(renderFavouritesItems)
+                checkFavorites()
               }
             </ul>
           </section>

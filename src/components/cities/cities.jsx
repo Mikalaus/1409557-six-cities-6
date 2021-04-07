@@ -1,12 +1,13 @@
 import React, {memo} from 'react';
 import MainNoOffers from '../main-no-offers/main--no-offers';
-import {getPinsForCurrentCity} from '../../utils';
+import {getOffers} from '../../store/main-page-data/selectors';
+import {connect} from 'react-redux';
 import SortingOptionsForm from '../sorting-options-form/sorting-options-form';
 import PlaceCardList from '../place-card-list/place-card-list';
 import Map from '../map/map';
 import PropTypes from 'prop-types';
 
-const Cities = ({sortedOffers, cityName, cityLocation}) => {
+const Cities = ({sortedOffers, cityName, offers, cityLocation}) => {
   if (sortedOffers.length === 0) {
     return (
       <MainNoOffers />
@@ -31,7 +32,7 @@ const Cities = ({sortedOffers, cityName, cityLocation}) => {
         <section className="cities__map map">
           <Map
             city={cityLocation}
-            points={getPinsForCurrentCity(cityName, sortedOffers)}
+            cards={offers}
           />
         </section>
       </div>
@@ -62,4 +63,10 @@ Cities.propTypes = {
   cityName: PropTypes.string.isRequired
 };
 
-export default memo(Cities);
+const mapStateToProps = (state) => {
+  return {
+    offers: getOffers(state)
+  };
+};
+
+export default memo(connect(mapStateToProps, null)(Cities));

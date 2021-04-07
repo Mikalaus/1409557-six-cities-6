@@ -4,9 +4,10 @@ import CommentForm from '../comment-form/comment-form';
 import PropTypes from 'prop-types';
 import ReviewList from '../review-list/review-list';
 import PlaceCard from '../universal/place-card';
+import {useParams} from 'react-router-dom';
 import Map from '../map/map';
-import {countRating, getPinsForCurrentCity} from '../../utils';
-import {fetchOffer} from '../../store/api-actions';
+import {countRating} from '../../utils';
+import {fetchOffer, fetchOffersList} from '../../store/api-actions';
 import {connect} from 'react-redux';
 import Spinner from '../spinner/spinner';
 import PremiumAdvertisement from '../universal/premium-advertisement';
@@ -26,11 +27,10 @@ import {
 } from '../../store/room-info-page-data/selectors';
 
 const RoomInfoPage = ({
-  id,
   offer,
+  setOffers,
   isOfferLoaded,
   setActiveOffer,
-  cityName,
   cityLocation,
   isAuthorized,
   nearby,
@@ -39,11 +39,12 @@ const RoomInfoPage = ({
   nullifyOfferLoaded
 }) => {
 
+  const {id} = useParams();
+
   useEffect(() => {
-    if (!isOfferLoaded) {
-      setActiveOffer(id);
-    }
-  }, [isOfferLoaded]);
+    setOffers();
+    setActiveOffer(Number(id));
+  }, []);
 
   if (!isOfferLoaded) {
     return (
@@ -88,7 +89,7 @@ const RoomInfoPage = ({
                 <h1 className="property__name">
                   {offer.title}
                 </h1>
-                <BookmarkRoomInfoPage id = {id}/>
+                <BookmarkRoomInfoPage id = {Number(id)}/>
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
@@ -142,14 +143,14 @@ const RoomInfoPage = ({
               </div>
               <section className="property__reviews reviews">
                 <ReviewList reviewList={reviews} />
-                {isAuthorized ? <CommentForm id = {id} /> : isAuthorized}
+                {isAuthorized ? <CommentForm id = {Number(id)} /> : isAuthorized}
               </section>
             </div>
           </div>
           <section className="property__map map">
             <Map
               city={cityLocation}
-              points={getPinsForCurrentCity(cityName, [...nearby, offer])}
+              cards={[...nearby, offer]}
             />
             {setActivePoint(offer.location)}
           </section>
@@ -179,7 +180,6 @@ const RoomInfoPage = ({
 
 RoomInfoPage.propTypes = {
   offer: PropTypes.shape({
-    id: PropTypes.number,
     isFavorite: PropTypes.bool,
     isPremium: PropTypes.bool,
     previewImage: PropTypes.string,
@@ -209,7 +209,8 @@ RoomInfoPage.propTypes = {
   reviews: PropTypes.array,
   setActivePoint: PropTypes.func,
   nullifyOfferLoaded: PropTypes.func,
-  favorites: PropTypes.array
+  favorites: PropTypes.array,
+  setOffers: PropTypes.func
 };
 
 const mapStateToProps = (state) => {
@@ -227,6 +228,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  setOffers() {
+    dispatch(fetchOffersList());
+  },
+
   setActiveOffer(id) {
     dispatch(fetchOffer(id));
   },

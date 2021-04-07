@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import browserHistory from '../../../browser-history';
 import {getOffers, getOfferByIdSelector} from '../../../store/main-page-data/selectors';
 import {getAuthorizationStatus} from '../../../store/user-info-data/selectors';
-import {getFavoritesSelector} from '../../../store/favorites-data/selectors';
 
 const BookmarkRoomInfoPage = ({addToFavorites, id, authorizationStatus}) => {
 
@@ -16,7 +15,7 @@ const BookmarkRoomInfoPage = ({addToFavorites, id, authorizationStatus}) => {
       addToFavorites(id, !offer.isFavorite);
       offer.isFavorite = !offer.isFavorite;
     } else {
-      browserHistory.push(`login`);
+      browserHistory.push(`/login`);
     }
   };
 
@@ -44,8 +43,7 @@ BookmarkRoomInfoPage.propTypes = {
 const mapStateToProps = (state) => {
   return {
     offers: getOffers(state),
-    authorizationStatus: getAuthorizationStatus(state),
-    favorites: getFavoritesSelector(state)
+    authorizationStatus: getAuthorizationStatus(state)
   };
 };
 

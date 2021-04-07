@@ -29,7 +29,7 @@ const App = () => (
       </PrivateRoute>
 
       <Route exact path="/offer/:id" >
-        <RoomInfoPage/>
+        <RoomInfoPage />
       </Route>
 
       <Route>

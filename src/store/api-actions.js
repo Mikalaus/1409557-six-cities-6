@@ -42,7 +42,7 @@ export const fetchOffer = (id) => (dispatch, _getState, api) => (
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(`login`)
     .then(() => dispatch(requireAuthorization(AuthorizationStatus.AUTH)))
-    .then(() => browserHistory.push(`/`))
+    .then(() => browserHistory.push(`/favorites`))
     .catch(() => browserHistory.push(`/login`))
 );
 
@@ -51,6 +51,7 @@ export const getUserInfo = () => (dispatch, _getState, api) => (
     .then(({data}) => adaptUserInfo(data))
     .then((userInfo) => dispatch(setUserInfo(userInfo)))
     .then(() => dispatch(requireAuthorization(AuthorizationStatus.AUTH)))
+    .then(() => dispatch(requireFavoritesLoaded(false)))
 );
 
 export const login = (user) => (dispatch, _getState, api) => (
