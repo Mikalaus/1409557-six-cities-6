@@ -15,27 +15,31 @@ const Header = ({authorizationStatus, logoutUser, userInfo}) => {
   const checkIsUserAuthorized = () => {
     if (authorizationStatus) {
       return (
-        <>
+        <a className="header__nav-link header__nav-link--profile" href="#">
           <div
             className="header__avatar-wrapper user__avatar-wrapper"
             style = {{backgroundImage: `url(${userInfo.avatarUrl})`}}
           />
           <Link
             to="/favorites"
-            className="header__user-name user__name"
-          >{userInfo.email}</Link>
+            className="header__user-name user__name">
+            {userInfo.email}
+          </Link>
           <span
             style={{marginLeft: `30px`, cursor: `pointer`}}
             onClick = {logoutUserCallback}
           >logout</span>
-        </>
+        </a>
       );
     }
 
     return (
-      <Link to="/login" className="header__nav-link header__nav-link--profile" href="#">
-        Sign in
-      </Link>
+      <a className="header__nav-link header__nav-link--profile" href="#">
+        <div className="header__avatar-wrapper user__avatar-wrapper"></div>
+        <Link to="/login" className="header__nav-link header__nav-link--profile" href="#">
+          Sign in
+        </Link>
+      </a>
     );
   };
 
