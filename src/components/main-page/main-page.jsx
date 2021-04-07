@@ -6,6 +6,13 @@ import {connect} from 'react-redux';
 import {fetchOffersList, getUserInfo} from '../../store/api-actions';
 import Spinner from '../spinner/spinner';
 import Header from '../header/header';
+import {
+  getSortedOffers,
+  getCityName,
+  getCityLocation,
+  getIsOffersLoaded
+} from '../../store/main-page-data/selectors';
+import {getAuthorizationStatus} from '../../store/user-info-data/selectors';
 
 const MainPage = ({
   authorizationStatus,
@@ -14,7 +21,6 @@ const MainPage = ({
   cityName,
   isOffersLoaded,
   setOffers,
-  favorites,
   onUserInfo
 }) => {
 
@@ -22,7 +28,7 @@ const MainPage = ({
     if (!isOffersLoaded) {
       setOffers();
     }
-  }, [isOffersLoaded, favorites]);
+  }, [isOffersLoaded]);
 
   useEffect(() => {
     onUserInfo();
@@ -100,19 +106,17 @@ MainPage.propTypes = {
   cityName: PropTypes.string.isRequired,
   isOffersLoaded: PropTypes.bool.isRequired,
   setOffers: PropTypes.func.isRequired,
-  authorizationStatus: PropTypes.bool.isRequired,
-  favorites: PropTypes.array,
+  authorizationStatus: PropTypes.bool,
   onUserInfo: PropTypes.func.isRequired
 };
 
-const mapStateToProps = ({MAIN, FAVORITES, USER}) => {
+const mapStateToProps = (state) => {
   return {
-    sortedOffers: MAIN.sortedOffers,
-    cityLocation: MAIN.cityLocation,
-    cityName: MAIN.cityName,
-    isOffersLoaded: MAIN.isOffersLoaded,
-    authorizationStatus: USER.authorizationStatus,
-    favorites: FAVORITES.favorites
+    sortedOffers: getSortedOffers(state),
+    cityLocation: getCityLocation(state),
+    cityName: getCityName(state),
+    isOffersLoaded: getIsOffersLoaded(state),
+    authorizationStatus: getAuthorizationStatus(state)
   };
 };
 

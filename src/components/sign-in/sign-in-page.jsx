@@ -3,6 +3,8 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import browserHistory from '../../browser-history';
+import {getAuthorizationStatus} from '../../store/user-info-data/selectors';
+import {getCityName} from '../../store/main-page-data/selectors';
 
 const SignInPage = ({onSubmit, cityName, onCheckAuth}) => {
 
@@ -91,10 +93,10 @@ const mapDispatchToProps = {
   onCheckAuth: checkAuth
 };
 
-const mapStateToProps = ({USER, MAIN}) => {
+const mapStateToProps = (state) => {
   return {
-    authorizationStatus: USER.authorizationStatus,
-    cityName: MAIN.cityName
+    authorizationStatus: getAuthorizationStatus(state),
+    cityName: getCityName(state)
   };
 };
 

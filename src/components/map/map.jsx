@@ -2,10 +2,48 @@ import React, {useEffect, useRef} from 'react';
 import leaflet from 'leaflet';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {getActivePoint, getOffers} from '../../store/main-page-data/selectors';
+import {getActiveOfferId} from '../../store/room-info-page-data/selectors';
 
 import 'leaflet/dist/leaflet.css';
 
-const Map = ({city, points, activePoint = {}}) => {
+const INITIAL_SETTINGS = {
+  zoom: 12,
+  zoomControl: false,
+  marker: true
+};
+
+const ICON = leaflet.icon({
+  iconUrl: `img/pin.svg`,
+  iconSize: [27, 39]
+});
+
+const ACTIVE_ICON = leaflet.icon({
+  iconUrl: `img/pin-active.svg`,
+  iconSize: [27, 39]
+});
+
+const setMarkers = (map, cards, activeCardId) => {
+  cards.forEach((card) => {
+    leaflet
+      .marker({
+        lat: card.location.latitude,
+        lon: card.location.longitude
+      }, {icon: card.id === activeCardId ? ACTIVE_ICON : ICON})
+      .addTo(map)
+      .bindPopup(card.title);
+  });
+};
+
+const removeMarkers = (map) => {
+  map.eachLayer(function (layer) {
+    if (layer instanceof leaflet.Marker) {
+      layer.remove();
+    }
+  });
+};
+
+const Map = ({city, cards, activePoint = {}, activeCardId}) => {
 
   const mapRef = useRef();
 
@@ -15,9 +53,7 @@ const Map = ({city, points, activePoint = {}}) => {
         lat: city.latitude,
         lng: city.longitude
       },
-      zoom: city.zoom,
-      zoomControl: false,
-      marker: true
+      ...INITIAL_SETTINGS
     });
 
     leaflet
@@ -26,27 +62,21 @@ const Map = ({city, points, activePoint = {}}) => {
       })
       .addTo(mapRef.current);
 
-    points.forEach((point) => {
-      const customIcon = leaflet.icon({
-        iconUrl: point.location === activePoint ? `./img/pin-active.svg` : `./img/pin.svg`,
-        iconSize: [27, 39]
-      });
-
-      leaflet.marker({
-        lat: point.location.latitude,
-        lng: point.location.longitude
-      },
-      {
-        icon: customIcon
-      })
-      .addTo(mapRef.current)
-      .bindPopup(point.title);
-    });
-
     return () => {
       mapRef.current.remove();
     };
-  }, [city, activePoint]);
+  }, []);
+
+  useEffect(() => {
+    mapRef.current.flyTo(new leaflet.LatLng(city.latitude, city.longitude), INITIAL_SETTINGS.zoom);
+    removeMarkers(mapRef.current);
+    setMarkers(mapRef.current, cards, activeCardId);
+  }, [activeCardId]);
+
+  useEffect(() => {
+    removeMarkers(mapRef.current);
+    setMarkers(mapRef.current, cards, activeCardId);
+  }, [activeCardId]);
 
   return (
     <div id="map" style={{height: `100%`}}/>
@@ -76,9 +106,11 @@ Map.propTypes = {
   )
 };
 
-const mapStateToProps = ({MAIN}) => {
+const mapStateToProps = (state) => {
   return {
-    activePoint: MAIN.activePoint,
+    activePoint: getActivePoint(state),
+    activeCardId: getActiveOfferId(state),
+    cards: getOffers(state)
   };
 };
 

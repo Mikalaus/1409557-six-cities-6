@@ -3,6 +3,7 @@ import PlaceCard from '../universal/place-card';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {setActivePointAction} from '../../store/actions';
+import {getSortedOffers} from '../../store/main-page-data/selectors';
 
 const PlaceCardList = ({offers, setActivePoint}) => {
 
@@ -52,9 +53,9 @@ const mapDispatchToProps = (dispatch) => ({
   }
 });
 
-const mapStateToProps = ({MAIN}) => {
+const mapStateToProps = (state) => {
   return {
-    offers: MAIN.sortedOffers
+    offers: getSortedOffers(state)
   };
 };
 

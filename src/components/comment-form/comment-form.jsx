@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {postUserComment} from '../../store/api-actions';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import {getIsReviewPosted, getIsReviewPostedError} from '../../store/room-info-page-data/selectors';
 
-const CommentForm = ({id, postComment}) => {
+const CommentForm = ({id, postComment, isReviewPosted}) => {
 
   const [rating, setRating] = useState(null);
 
@@ -24,10 +25,15 @@ const CommentForm = ({id, postComment}) => {
   const onSubmit = () => (evt) => {
     evt.preventDefault();
     postComment(id, {rating, comment});
-    setComment(``);
-    setRating(null);
-    document.querySelector(`.reviews__form`).reset();
   };
+
+  useEffect(() => {
+    if (isReviewPosted) {
+      document.querySelector(`.reviews__form`).reset();
+      setComment(``);
+      setRating(null);
+    }
+  }, [isReviewPosted]);
 
   return (
     <form className="reviews__form form" action="#" method="post" onSubmit = {onSubmit()}>
@@ -132,9 +138,16 @@ CommentForm.propTypes = {
   postComment: PropTypes.func.isRequired
 };
 
+const mapStateToProps = (state) => {
+  return {
+    isReviewPosted: getIsReviewPosted(state),
+    isReviewPostedError: getIsReviewPostedError(state)
+  };
+};
+
 const mapDispatchToProps = {
   postComment: postUserComment
 };
 
 export {CommentForm};
-export default connect(null, mapDispatchToProps)(CommentForm);
+export default connect(mapStateToProps, mapDispatchToProps)(CommentForm);

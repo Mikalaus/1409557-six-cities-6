@@ -7,6 +7,7 @@ const initialState = {
   isOfferLoaded: false,
   nearby: [],
   reviews: [],
+  isReviewPostedError: false
 };
 
 export const roomInfoPage = (state = initialState, action) => {
@@ -45,7 +46,13 @@ export const roomInfoPage = (state = initialState, action) => {
     case ActionType.ADD_USER_REVIEW:
       return {
         ...state,
-        reviews: [action.payload, ...state.reviews]
+        isReviewPosted: action.payload
+      };
+
+    case ActionType.CATCH_ERROR_POST_USER_REVIEW:
+      return {
+        ...state,
+        isReviewPostedError: action.payload
       };
   }
 

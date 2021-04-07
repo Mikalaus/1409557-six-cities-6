@@ -7,7 +7,6 @@ const adaptOffer = (offer) => (
           location: {
             latitude: offer.city.location.latitude,
             longitude: offer.city.location.longitude,
-            zoom: offer.city.location.zoom
           },
           name: offer.city.name
         },

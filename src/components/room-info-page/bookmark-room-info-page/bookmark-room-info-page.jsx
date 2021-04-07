@@ -1,25 +1,36 @@
-import React from 'react';
-import {connect} from 'react-redux';
+import React, {memo} from 'react';
+import {connect, useSelector} from 'react-redux';
 import {postFavorites} from '../../../store/api-actions';
 import PropTypes from 'prop-types';
+import browserHistory from '../../../browser-history';
+import {getOffers, getOfferByIdSelector} from '../../../store/main-page-data/selectors';
+import {getAuthorizationStatus} from '../../../store/user-info-data/selectors';
+import {getFavoritesSelector} from '../../../store/favorites-data/selectors';
 
-const BookmarkRoomInfoPage = ({addToFavorites, id, isFavorite}) => {
+const BookmarkRoomInfoPage = ({addToFavorites, id, authorizationStatus}) => {
 
-  const buttonClickHandler = () => {
-    addToFavorites(id, !isFavorite);
+  const offer = useSelector((state) => getOfferByIdSelector(state, id));
+
+  const onButtonClickCallback = () => {
+    if (authorizationStatus) {
+      addToFavorites(id, !offer.isFavorite);
+      offer.isFavorite = !offer.isFavorite;
+    } else {
+      browserHistory.push(`login`);
+    }
   };
 
   return (
     <button
       className={
-        `${isFavorite ? `property__bookmark-button--active` : isFavorite} property__bookmark-button button`}
+        `${offer.isFavorite ? `property__bookmark-button--active` : offer.isFavorite} property__bookmark-button button`}
       type="button"
-      onClick = {buttonClickHandler}
+      onClick = {onButtonClickCallback}
     >
       <svg className="property__bookmark-icon" width="31" height="33">
         <use xlinkHref="#icon-bookmark"></use>
       </svg>
-      <span className="visually-hidden">{isFavorite ? `To bookmarks` : `In bookmarks`}</span>
+      <span className="visually-hidden">{offer.isFavorite ? `To bookmarks` : `In bookmarks`}</span>
     </button>
   );
 };
@@ -27,12 +38,14 @@ const BookmarkRoomInfoPage = ({addToFavorites, id, isFavorite}) => {
 BookmarkRoomInfoPage.propTypes = {
   addToFavorites: PropTypes.func,
   id: PropTypes.number,
-  isFavorite: PropTypes.bool
+  authorizationStatus: PropTypes.bool
 };
 
-const mapStateToProps = ({MAIN}) => {
+const mapStateToProps = (state) => {
   return {
-    offers: MAIN.offers
+    offers: getOffers(state),
+    authorizationStatus: getAuthorizationStatus(state),
+    favorites: getFavoritesSelector(state)
   };
 };
 
@@ -41,4 +54,4 @@ const mapDispatchToProps = {
 };
 
 export {BookmarkRoomInfoPage};
-export default connect(mapStateToProps, mapDispatchToProps)(BookmarkRoomInfoPage);
+export default memo(connect(mapStateToProps, mapDispatchToProps)(BookmarkRoomInfoPage));

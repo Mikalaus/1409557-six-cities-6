@@ -14,6 +14,16 @@ import {nullifyIsOfferLoaded, setActivePointAction} from '../../store/actions';
 import PropertiesList from '../property-list/property-list';
 import Header from '../header/header';
 import BookmarkRoomInfoPage from './bookmark-room-info-page/bookmark-room-info-page';
+import {getCityName, getCityLocation} from '../../store/main-page-data/selectors';
+import {getFavoritesSelector} from '../../store/favorites-data/selectors';
+import {getAuthorizationStatus} from '../../store/user-info-data/selectors';
+import {
+  getIsOfferLoaded,
+  getNearby,
+  getReviews,
+  getActiveOfferId,
+  getActiveOffer
+} from '../../store/room-info-page-data/selectors';
 
 const RoomInfoPage = ({
   id,
@@ -26,15 +36,14 @@ const RoomInfoPage = ({
   nearby,
   reviews,
   setActivePoint,
-  nullifyOfferLoaded,
-  favorites
+  nullifyOfferLoaded
 }) => {
 
   useEffect(() => {
     if (!isOfferLoaded) {
       setActiveOffer(id);
     }
-  }, [isOfferLoaded, favorites]);
+  }, [isOfferLoaded]);
 
   if (!isOfferLoaded) {
     return (
@@ -70,7 +79,7 @@ const RoomInfoPage = ({
       <main className="page__main page__main--property">
         <section className="property">
           <div className="property__gallery-container container">
-            <PhotoGallery images={offer.images} />
+            <PhotoGallery images={offer.images.slice(-6)} />
           </div>
           <div className="property__container container">
             <div className="property__wrapper">
@@ -79,7 +88,7 @@ const RoomInfoPage = ({
                 <h1 className="property__name">
                   {offer.title}
                 </h1>
-                <BookmarkRoomInfoPage id = {id} isFavorite = {offer.isFavorite}/>
+                <BookmarkRoomInfoPage id = {id}/>
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
@@ -203,17 +212,17 @@ RoomInfoPage.propTypes = {
   favorites: PropTypes.array
 };
 
-const mapStateToProps = ({MAIN, OFFER, USER, FAVORITES}) => {
+const mapStateToProps = (state) => {
   return {
-    offer: OFFER.activeOffer,
-    isOfferLoaded: OFFER.isOfferLoaded,
-    cityName: MAIN.cityName,
-    cityLocation: MAIN.cityLocation,
-    isAuthorized: USER.authorizationStatus,
-    nearby: OFFER.nearby,
-    reviews: OFFER.reviews,
-    id: OFFER.activeOfferId,
-    favorites: FAVORITES.favorites
+    offer: getActiveOffer(state),
+    isOfferLoaded: getIsOfferLoaded(state),
+    cityName: getCityName(state),
+    cityLocation: getCityLocation(state),
+    isAuthorized: getAuthorizationStatus(state),
+    nearby: getNearby(state),
+    reviews: getReviews(state),
+    id: getActiveOfferId(state),
+    favorites: getFavoritesSelector(state)
   };
 };
 

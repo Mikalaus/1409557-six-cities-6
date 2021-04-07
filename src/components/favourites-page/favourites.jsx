@@ -5,6 +5,8 @@ import {connect} from 'react-redux';
 import Spinner from '../spinner/spinner';
 import Header from '../header/header';
 import FavoritesItem from './favorites-item';
+import {getFavoritesSelector, getLoadedFavoritesStatus} from '../../store/favorites-data/selectors';
+import {getAuthorizationStatus} from '../../store/user-info-data/selectors';
 
 const FavouritesPage = ({
   isFavoritesLoaded,
@@ -107,11 +109,11 @@ const mapDispatchToProps = {
   onUserInfo: getUserInfo
 };
 
-const mapStateToProps = ({FAVORITES, USER}) => {
+const mapStateToProps = (state) => {
   return {
-    isFavoritesLoaded: FAVORITES.isFavoritesLoaded,
-    favorites: FAVORITES.favorites,
-    authorizationStatus: USER.authorizationStatus
+    isFavoritesLoaded: getLoadedFavoritesStatus(state),
+    favorites: getFavoritesSelector(state),
+    authorizationStatus: getAuthorizationStatus(state)
   };
 };
 

@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {logout} from '../../store/api-actions';
 import {connect} from 'react-redux';
+import {getUserInfo} from '../../store/user-info-data/selectors';
+
 
 const Header = ({authorizationStatus, logoutUser, userInfo}) => {
 
@@ -71,15 +73,15 @@ const mapDispatchToProps = {
   logoutUser: logout
 };
 
-const mapStateToProps = ({USER}) => {
+const mapStateToProps = (state) => {
   return {
-    userInfo: USER.userInfo
+    userInfo: getUserInfo(state)
   };
 };
 
 
 Header.propTypes = {
-  authorizationStatus: PropTypes.bool.isRequired,
+  authorizationStatus: PropTypes.bool,
   logoutUser: PropTypes.func.isRequired,
   userInfo: PropTypes.shape({
     avatarUrl: PropTypes.string,

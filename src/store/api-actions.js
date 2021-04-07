@@ -7,7 +7,9 @@ import {
   setUserInfo,
   redirectToRoute,
   setFavorites,
-  requireFavoritesLoaded
+  requireFavoritesLoaded,
+  addUserReview,
+  catchErrorPostUserReview
 } from "./actions";
 import {AuthorizationStatus} from "../constants";
 import {
@@ -21,7 +23,8 @@ import browserHistory from '../browser-history';
 export const fetchOffersList = () => (dispatch, _getState, api) => (
   api.get(`hotels`)
     .then(({data}) => adaptOffersToClient(data)))
-    .then((offers) => dispatch(setOffersAction(offers)));
+    .then((offers) => dispatch(setOffersAction(offers))
+    .catch(() => dispatch(setOffersAction([]))));
 
 export const fetchOffer = (id) => (dispatch, _getState, api) => (
   Promise.all([
@@ -68,9 +71,13 @@ export const getComments = (id) => (dispatch, _getState, api) => (
 );
 
 export const postUserComment = (id, data) => (dispatch, _getState, api) => (
-  api.post(`comments/${id}`, data)
+  api.post(`coments/${id}`, data)
+    .then(() => dispatch(catchErrorPostUserReview(false)))
+    .then(() => dispatch(addUserReview(false)))
     .then(() => api.get(`comments/${id}`)
-      .then((reviews) => dispatch(setReviews(reviews.data.map(adaptReview))))));
+      .then((reviews) => dispatch(setReviews(reviews.data.map(adaptReview)))))
+      .then(() => dispatch(addUserReview(true)))
+    .catch(() => dispatch(catchErrorPostUserReview(true))));
 
 export const getFavorites = () => (dispatch, _getState, api) => (
   api.get(`favorite`)

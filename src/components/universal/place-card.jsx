@@ -12,7 +12,7 @@ const PlaceCard = ({
   onChangeActiveCard,
   onActiveOfferId,
   nullifyOfferLoaded,
-  isNearby = false
+  isNearby = false,
 }) => {
 
   const {
@@ -21,7 +21,6 @@ const PlaceCard = ({
     price,
     rating,
     type,
-    isFavorite,
     isPremium,
     id
   } = place;
@@ -29,12 +28,14 @@ const PlaceCard = ({
   const onMouseEnterCallback = () => {
     if (!isNearby) {
       onChangeActiveCard(place.location);
+      onActiveOfferId(id);
     }
   };
 
   const onMouseOverCallback = () => {
     if (!isNearby) {
       onChangeActiveCard(null);
+      onActiveOfferId(id);
     }
   };
 
@@ -66,7 +67,7 @@ const PlaceCard = ({
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <Bookmark id = {id} isFavorite = {isFavorite} />
+          <Bookmark id = {id} />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

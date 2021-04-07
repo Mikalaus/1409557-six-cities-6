@@ -15,7 +15,8 @@ export const ActionType = {
   SET_FAVORITES: `favorites/setFavorites`,
   REQUIRE_FAVORITES_LOADED: `favorites/requireFavoritesLoaded`,
   CHANGE_FAVORITE_STATUS: `place-card/changeFavoriteStatus`,
-  SET_USER_INFO: `header/setUserInfo`
+  SET_USER_INFO: `header/setUserInfo`,
+  CATCH_ERROR_POST_USER_REVIEW: `comment-form/isReviewPostedError`
 };
 
 export const setCityNameAction = (city) => ({type: ActionType.SET_CITY_NAME, payload: city});
@@ -51,3 +52,5 @@ export const requireFavoritesLoaded = (status) => ({type: ActionType.REQUIRE_FAV
 export const changeFavoriteStatus = (offer) => ({type: ActionType.CHANGE_FAVORITE_STATUS, payload: offer});
 
 export const setUserInfo = (info) => ({type: ActionType.SET_USER_INFO, payload: info});
+
+export const catchErrorPostUserReview = (status) => ({type: ActionType.CATCH_ERROR_POST_USER_REVIEW, payload: status});

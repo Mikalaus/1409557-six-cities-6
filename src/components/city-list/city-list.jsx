@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {setCityNameAction, setCityLocationAction, setSortedOffersAction} from '../../store/actions';
+import {getOffers, getCityName} from '../../store/main-page-data/selectors';
 import {getOffersForCurrentCity} from '../../utils';
 import {CitiesLocation} from '../../constants';
 
@@ -111,10 +112,10 @@ const mapDispatchToProps = (dispatch) => ({
   }
 });
 
-const mapStateToProps = ({MAIN}) => {
+const mapStateToProps = (state) => {
   return {
-    offers: MAIN.offers,
-    cityName: MAIN.cityName
+    offers: getOffers(state),
+    cityName: getCityName(state)
   };
 };
 

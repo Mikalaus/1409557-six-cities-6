@@ -3,6 +3,7 @@ import {setSortedOffersAction} from '../../store/actions';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {getOffersForCurrentCity} from '../../utils';
+import {getCityName, getOffers, getSortedOffers} from '../../store/main-page-data/selectors';
 
 const SortTypes = {
   popular: (city, offers) => (
@@ -31,11 +32,11 @@ const SortTypes = {
   }
 };
 
-const SortingOptionsForm = ({offers, city, setSortedOffers}) => {
+const SortingOptionsForm = ({sortedOffers, offers, city, setSortedOffers}) => {
 
-  const SORT_TYPE_NAME = document.querySelector(`.places__sorting-type`);
 
   const sortTypeClickHandler = (sortedOffers, sortName) => (evt) => {
+    const SORT_TYPE_NAME = document.querySelector(`.places__sorting-type`);
     setSortedOffers(sortedOffers);
     document.querySelector(`.places__option--active`).classList.remove(`places__option--active`);
     evt.currentTarget.classList.add(`places__option--active`);
@@ -73,17 +74,17 @@ const SortingOptionsForm = ({offers, city, setSortedOffers}) => {
           <li
             className="places__option"
             tabIndex="0"
-            onClick={sortTypeClickHandler(SortTypes.priceHighToLow([...offers]), `Price: high to low`)}
+            onClick={sortTypeClickHandler(SortTypes.priceHighToLow([...sortedOffers]), `Price: high to low`)}
           >Price: high to low</li>
           <li
             className="places__option"
             tabIndex="0"
-            onClick={sortTypeClickHandler(SortTypes.priceLowToHigh([...offers]), `Price: low to high`)}
+            onClick={sortTypeClickHandler(SortTypes.priceLowToHigh([...sortedOffers]), `Price: low to high`)}
           >Price: low to high</li>
           <li
             className="places__option"
             tabIndex="0"
-            onClick={sortTypeClickHandler(SortTypes.topRated([...offers]), `Top rated first`)}
+            onClick={sortTypeClickHandler(SortTypes.topRated([...sortedOffers]), `Top rated first`)}
           >Top rated first</li>
         </ul>
 
@@ -109,10 +110,11 @@ SortingOptionsForm.propTypes = {
   setSortedOffers: PropTypes.func
 };
 
-const mapStateToProps = ({MAIN}) => {
+const mapStateToProps = (state) => {
   return {
-    offers: MAIN.sortedOffers,
-    city: MAIN.cityName
+    sortedOffers: getSortedOffers(state),
+    city: getCityName(state),
+    offers: getOffers(state)
   };
 };
 
