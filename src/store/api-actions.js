@@ -22,8 +22,7 @@ import browserHistory from '../browser-history';
 export const fetchOffersList = () => (dispatch, _getState, api) => (
   api.get(`hotels`)
     .then(({data}) => adaptOffersToClient(data)))
-    .then((offers) => dispatch(setOffersAction(offers))
-    .catch(() => dispatch(setOffersAction([]))));
+    .then((offers) => dispatch(setOffersAction(offers)));
 
 export const fetchOffer = (id) => (dispatch, _getState, api) => (
   Promise.all([
@@ -41,7 +40,9 @@ export const fetchOffer = (id) => (dispatch, _getState, api) => (
 
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(`login`)
-    .then(() => dispatch(requireAuthorization(AuthorizationStatus.AUTH)))
+    .then(() => {
+      dispatch(requireAuthorization(AuthorizationStatus.AUTH));
+    })
     .then(() => browserHistory.push(`/favorites`))
     .catch(() => browserHistory.push(`/login`))
 );

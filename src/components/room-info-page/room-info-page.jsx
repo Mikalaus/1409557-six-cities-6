@@ -7,17 +7,17 @@ import PlaceCard from '../universal/place-card';
 import {useParams} from 'react-router-dom';
 import Map from '../map/map';
 import {countRating} from '../../utils';
-import {fetchOffer, fetchOffersList} from '../../store/api-actions';
+import {fetchOffer, postFavorites} from '../../store/api-actions';
 import {connect} from 'react-redux';
 import Spinner from '../spinner/spinner';
 import PremiumAdvertisement from '../universal/premium-advertisement';
 import {nullifyIsOfferLoaded, setActivePointAction} from '../../store/actions';
 import PropertiesList from '../property-list/property-list';
 import Header from '../header/header';
-import BookmarkRoomInfoPage from './bookmark-room-info-page/bookmark-room-info-page';
 import {getCityName, getCityLocation} from '../../store/main-page-data/selectors';
 import {getFavoritesSelector} from '../../store/favorites-data/selectors';
 import {getAuthorizationStatus} from '../../store/user-info-data/selectors';
+import browserHistory from '../../browser-history';
 import {
   getIsOfferLoaded,
   getNearby,
@@ -28,7 +28,6 @@ import {
 
 const RoomInfoPage = ({
   offer,
-  setOffers,
   isOfferLoaded,
   setActiveOffer,
   cityLocation,
@@ -36,15 +35,24 @@ const RoomInfoPage = ({
   nearby,
   reviews,
   setActivePoint,
-  nullifyOfferLoaded
+  nullifyOfferLoaded,
+  addToFavorites
 }) => {
+
+  const onButtonClickCallback = () => {
+    if (isAuthorized) {
+      addToFavorites(id, !offer.isFavorite);
+      offer.isFavorite = !offer.isFavorite;
+    } else {
+      browserHistory.push(`/login`);
+    }
+  };
 
   const {id} = useParams();
 
   useEffect(() => {
-    setOffers();
     setActiveOffer(Number(id));
-  }, []);
+  }, [id]);
 
   if (!isOfferLoaded) {
     return (
@@ -89,7 +97,17 @@ const RoomInfoPage = ({
                 <h1 className="property__name">
                   {offer.title}
                 </h1>
-                <BookmarkRoomInfoPage id = {Number(id)}/>
+                <button
+                  className={
+                    `${offer.isFavorite ? `property__bookmark-button--active` : offer.isFavorite} property__bookmark-button button`}
+                  type="button"
+                  onClick = {onButtonClickCallback}
+                >
+                  <svg className="property__bookmark-icon" width="31" height="33">
+                    <use xlinkHref="#icon-bookmark"></use>
+                  </svg>
+                  <span className="visually-hidden">{offer.isFavorite ? `To bookmarks` : `In bookmarks`}</span>
+                </button>
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
@@ -210,7 +228,7 @@ RoomInfoPage.propTypes = {
   setActivePoint: PropTypes.func,
   nullifyOfferLoaded: PropTypes.func,
   favorites: PropTypes.array,
-  setOffers: PropTypes.func
+  addToFavorites: PropTypes.func
 };
 
 const mapStateToProps = (state) => {
@@ -228,10 +246,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  setOffers() {
-    dispatch(fetchOffersList());
-  },
-
   setActiveOffer(id) {
     dispatch(fetchOffer(id));
   },
@@ -242,6 +256,9 @@ const mapDispatchToProps = (dispatch) => ({
 
   nullifyOfferLoaded() {
     dispatch(nullifyIsOfferLoaded());
+  },
+  addToFavorites(id, status) {
+    dispatch(postFavorites(id, status));
   }
 });
 

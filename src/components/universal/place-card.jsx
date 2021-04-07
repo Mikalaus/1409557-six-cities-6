@@ -1,11 +1,13 @@
 import {countRating} from '../../utils';
 import PremiumAdvertisement from './premium-advertisement';
-import React, {memo} from 'react';
+import React, {memo, createRef} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
+import {postFavorites} from '../../store/api-actions';
 import {setActiveOfferId, setActivePointAction, nullifyIsOfferLoaded} from '../../store/actions';
-import Bookmark from './bookmark';
+import {getAuthorizationStatus} from '../../store/user-info-data/selectors';
+import browserHistory from '../../browser-history';
 
 const PlaceCard = ({
   place,
@@ -13,7 +15,11 @@ const PlaceCard = ({
   onActiveOfferId,
   nullifyOfferLoaded,
   isNearby = false,
+  authorizationStatus,
+  addToFavorites
 }) => {
+
+  const bookmarkRef = createRef();
 
   const {
     title,
@@ -36,6 +42,16 @@ const PlaceCard = ({
     if (!isNearby) {
       onChangeActiveCard(null);
       onActiveOfferId(id);
+    }
+  };
+
+  const onButtonClickCallback = () => {
+    if (authorizationStatus) {
+      addToFavorites(id, !place.isFavorite);
+      place.isFavorite = !place.isFavorite;
+      bookmarkRef.current.classList.toggle(`place-card__bookmark-button--active`);
+    } else {
+      browserHistory.push(`/login`);
     }
   };
 
@@ -67,7 +83,17 @@ const PlaceCard = ({
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <Bookmark id = {id} />
+          <button
+            className={`${place.isFavorite ? `place-card__bookmark-button--active` : ``} place-card__bookmark-button button`}
+            type="button"
+            onClick = {onButtonClickCallback}
+            ref={bookmarkRef}
+          >
+            <svg className="place-card__bookmark-icon" width="18" height="19">
+              <use xlinkHref="#icon-bookmark"></use>
+            </svg>
+            <span className="visually-hidden">{place.isFavorite ? `To bookmarks` : `In bookmarks`}</span>
+          </button>
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
@@ -100,7 +126,15 @@ PlaceCard.propTypes = {
   onActiveOfferId: PropTypes.func.isRequired,
   onChangeActiveCard: PropTypes.func.isRequired,
   nullifyOfferLoaded: PropTypes.func.isRequired,
-  isNearby: PropTypes.bool
+  isNearby: PropTypes.bool,
+  authorizationStatus: PropTypes.bool,
+  addToFavorites: PropTypes.func
+};
+
+const mapStateToProps = (state) => {
+  return {
+    authorizationStatus: getAuthorizationStatus(state)
+  };
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -114,8 +148,12 @@ const mapDispatchToProps = (dispatch) => ({
 
   nullifyOfferLoaded() {
     dispatch(nullifyIsOfferLoaded());
+  },
+
+  addToFavorites(id, status) {
+    dispatch(postFavorites(id, status));
   }
 });
 
 export {PlaceCard};
-export default memo(connect(null, mapDispatchToProps)(PlaceCard));
+export default memo(connect(mapStateToProps, mapDispatchToProps)(PlaceCard));
