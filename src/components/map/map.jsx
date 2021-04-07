@@ -65,16 +65,14 @@ const Map = ({city, cards, activeCardId}) => {
       })
       .addTo(mapRef.current);
 
+    removeMarkers(mapRef.current);
+    setMarkers(mapRef.current, cards, activeCardId);
+
     return () => {
       mapRef.current.remove();
     };
-  }, []);
-
-  useEffect(() => {
-    mapRef.current.flyTo(new leaflet.LatLng(city.latitude, city.longitude), INITIAL_SETTINGS.zoom);
-    removeMarkers(mapRef.current);
-    setMarkers(mapRef.current, cards, activeCardId);
   }, [city]);
+
 
   useEffect(() => {
     removeMarkers(mapRef.current);

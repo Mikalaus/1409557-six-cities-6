@@ -5,13 +5,12 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {postFavorites} from '../../store/api-actions';
-import {setActiveOfferId, setActivePointAction, nullifyIsOfferLoaded} from '../../store/actions';
+import {setActiveOfferId, nullifyIsOfferLoaded} from '../../store/actions';
 import {getAuthorizationStatus} from '../../store/user-info-data/selectors';
 import browserHistory from '../../browser-history';
 
 const PlaceCard = ({
   place,
-  onChangeActiveCard,
   onActiveOfferId,
   nullifyOfferLoaded,
   isNearby = false,
@@ -33,15 +32,13 @@ const PlaceCard = ({
 
   const onMouseEnterCallback = () => {
     if (!isNearby) {
-      onChangeActiveCard(place.location);
       onActiveOfferId(id);
     }
   };
 
   const onMouseOverCallback = () => {
     if (!isNearby) {
-      onChangeActiveCard(null);
-      onActiveOfferId(id);
+      onActiveOfferId(null);
     }
   };
 
@@ -140,10 +137,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   onActiveOfferId(id) {
     dispatch(setActiveOfferId(id));
-  },
-
-  onChangeActiveCard(place) {
-    dispatch(setActivePointAction(place));
   },
 
   nullifyOfferLoaded() {
