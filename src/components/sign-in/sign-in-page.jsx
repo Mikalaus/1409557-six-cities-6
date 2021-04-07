@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import browserHistory from '../../browser-history';
 import {getAuthorizationStatus} from '../../store/user-info-data/selectors';
 import {getCityName} from '../../store/main-page-data/selectors';
+import Header from '../header/header';
 
 const SignInPage = ({onSubmit, cityName, onCheckAuth}) => {
 
@@ -31,6 +32,7 @@ const SignInPage = ({onSubmit, cityName, onCheckAuth}) => {
 
   return (
     <>
+      <Header authorizationStatus = {false}/>
       <div className="page__login-container container">
         <section className="login">
           <h1 className="login__title">Sign in</h1>

@@ -72,7 +72,7 @@ export const getComments = (id) => (dispatch, _getState, api) => (
 );
 
 export const postUserComment = (id, data) => (dispatch, _getState, api) => (
-  api.post(`coments/${id}`, data)
+  api.post(`comments/${id}`, data)
     .then(() => dispatch(addUserReview(false)))
     .then(() => api.get(`comments/${id}`)
       .then((reviews) => dispatch(setReviews(reviews.data.map(adaptReview)))))

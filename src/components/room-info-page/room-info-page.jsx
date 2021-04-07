@@ -7,7 +7,7 @@ import PlaceCard from '../universal/place-card';
 import {useParams} from 'react-router-dom';
 import Map from '../map/map';
 import {countRating} from '../../utils';
-import {fetchOffer, postFavorites} from '../../store/api-actions';
+import {fetchOffer, getUserInfo, postFavorites} from '../../store/api-actions';
 import {connect} from 'react-redux';
 import Spinner from '../spinner/spinner';
 import PremiumAdvertisement from '../universal/premium-advertisement';
@@ -36,8 +36,11 @@ const RoomInfoPage = ({
   reviews,
   setActivePoint,
   nullifyOfferLoaded,
-  addToFavorites
+  addToFavorites,
+  onUserInfo
 }) => {
+
+  onUserInfo();
 
   const bookmarkRef = createRef();
 
@@ -231,7 +234,8 @@ RoomInfoPage.propTypes = {
   setActivePoint: PropTypes.func,
   nullifyOfferLoaded: PropTypes.func,
   favorites: PropTypes.array,
-  addToFavorites: PropTypes.func
+  addToFavorites: PropTypes.func,
+  onUserInfo: PropTypes.func
 };
 
 const mapStateToProps = (state) => {
@@ -260,8 +264,13 @@ const mapDispatchToProps = (dispatch) => ({
   nullifyOfferLoaded() {
     dispatch(nullifyIsOfferLoaded());
   },
+
   addToFavorites(id, status) {
     dispatch(postFavorites(id, status));
+  },
+
+  onUserInfo() {
+    dispatch(getUserInfo());
   }
 });
 

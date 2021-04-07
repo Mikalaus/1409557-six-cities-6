@@ -71,7 +71,7 @@ const Map = ({city, cards, activeCardId}) => {
     mapRef.current.flyTo(new leaflet.LatLng(city.latitude, city.longitude), INITIAL_SETTINGS.zoom);
     removeMarkers(mapRef.current);
     setMarkers(mapRef.current, cards, activeCardId);
-  }, [activeCardId]);
+  }, [city]);
 
   useEffect(() => {
     removeMarkers(mapRef.current);
