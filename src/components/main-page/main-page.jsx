@@ -13,6 +13,7 @@ import {
   getIsOffersLoaded
 } from '../../store/main-page-data/selectors';
 import {getAuthorizationStatus} from '../../store/user-info-data/selectors';
+import {setActiveOfferId} from '../../store/actions';
 
 const MainPage = ({
   authorizationStatus,
@@ -21,8 +22,11 @@ const MainPage = ({
   cityName,
   isOffersLoaded,
   setOffers,
-  onUserInfo
+  onUserInfo,
+  onActiveOfferId
 }) => {
+
+  onActiveOfferId(null);
 
   useEffect(() => {
     if (!isOffersLoaded) {
@@ -107,7 +111,8 @@ MainPage.propTypes = {
   isOffersLoaded: PropTypes.bool.isRequired,
   setOffers: PropTypes.func.isRequired,
   authorizationStatus: PropTypes.bool,
-  onUserInfo: PropTypes.func.isRequired
+  onUserInfo: PropTypes.func.isRequired,
+  onActiveOfferId: PropTypes.func
 };
 
 const mapStateToProps = (state) => {
@@ -127,7 +132,11 @@ const mapDispatchToProps = (dispatch) => ({
 
   onUserInfo() {
     dispatch(getUserInfo());
-  }
+  },
+
+  onActiveOfferId(id) {
+    dispatch(setActiveOfferId(id));
+  },
 });
 
 export {MainPage};

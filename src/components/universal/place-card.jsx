@@ -18,8 +18,6 @@ const PlaceCard = ({
   addToFavorites
 }) => {
 
-  onActiveOfferId(null);
-
   const bookmarkRef = createRef();
 
   const {
