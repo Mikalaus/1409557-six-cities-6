@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, createRef} from 'react';
 import PhotoGallery from '../photo-gallery/photo-galery';
 import CommentForm from '../comment-form/comment-form';
 import PropTypes from 'prop-types';
@@ -31,7 +31,7 @@ const RoomInfoPage = ({
   isOfferLoaded,
   setActiveOffer,
   cityLocation,
-  isAuthorized,
+  authorizationStatus,
   nearby,
   reviews,
   setActivePoint,
@@ -39,10 +39,12 @@ const RoomInfoPage = ({
   addToFavorites
 }) => {
 
+  const bookmarkRef = createRef();
+
   const onButtonClickCallback = () => {
-    if (isAuthorized) {
+    if (authorizationStatus) {
       addToFavorites(id, !offer.isFavorite);
-      offer.isFavorite = !offer.isFavorite;
+      bookmarkRef.current.classList.toggle(`property__bookmark-button--active`);
     } else {
       browserHistory.push(`/login`);
     }
@@ -83,7 +85,7 @@ const RoomInfoPage = ({
         </svg>
       </div>
 
-      <Header authorizationStatus = {isAuthorized} />
+      <Header authorizationStatus = {authorizationStatus} />
 
       <main className="page__main page__main--property">
         <section className="property">
@@ -102,6 +104,7 @@ const RoomInfoPage = ({
                     `${offer.isFavorite ? `property__bookmark-button--active` : offer.isFavorite} property__bookmark-button button`}
                   type="button"
                   onClick = {onButtonClickCallback}
+                  ref={bookmarkRef}
                 >
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
@@ -161,7 +164,7 @@ const RoomInfoPage = ({
               </div>
               <section className="property__reviews reviews">
                 <ReviewList reviewList={reviews} />
-                {isAuthorized ? <CommentForm id = {Number(id)} /> : isAuthorized}
+                {authorizationStatus ? <CommentForm id = {Number(id)} /> : authorizationStatus}
               </section>
             </div>
           </div>
@@ -222,7 +225,7 @@ RoomInfoPage.propTypes = {
   setActiveOffer: PropTypes.func,
   cityName: PropTypes.string,
   cityLocation: PropTypes.object,
-  isAuthorized: PropTypes.bool,
+  authorizationStatus: PropTypes.bool,
   nearby: PropTypes.array,
   reviews: PropTypes.array,
   setActivePoint: PropTypes.func,
@@ -237,7 +240,7 @@ const mapStateToProps = (state) => {
     isOfferLoaded: getIsOfferLoaded(state),
     cityName: getCityName(state),
     cityLocation: getCityLocation(state),
-    isAuthorized: getAuthorizationStatus(state),
+    authorizationStatus: getAuthorizationStatus(state),
     nearby: getNearby(state),
     reviews: getReviews(state),
     id: getActiveOfferId(state),
