@@ -35,9 +35,9 @@ const SortTypes = {
 const SortingOptionsForm = ({sortedOffers, offers, city, setSortedOffers}) => {
 
 
-  const sortTypeClickHandler = (sortedOffers, sortName) => (evt) => {
+  const sortTypeClickHandler = (offerList, sortName) => (evt) => {
     const SORT_TYPE_NAME = document.querySelector(`.places__sorting-type`);
-    setSortedOffers(sortedOffers);
+    setSortedOffers(offerList);
     document.querySelector(`.places__option--active`).classList.remove(`places__option--active`);
     evt.currentTarget.classList.add(`places__option--active`);
     const popup = document.querySelector(`.places__options--custom`);
@@ -95,6 +95,18 @@ const SortingOptionsForm = ({sortedOffers, offers, city, setSortedOffers}) => {
 
 SortingOptionsForm.propTypes = {
   offers: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        isFavorite: PropTypes.bool.isRequired,
+        isPremium: PropTypes.bool.isRequired,
+        previewImage: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        rating: PropTypes.number.isRequired,
+        title: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired
+      })
+  ),
+  sortedOffers: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number.isRequired,
         isFavorite: PropTypes.bool.isRequired,

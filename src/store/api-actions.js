@@ -8,8 +8,7 @@ import {
   redirectToRoute,
   setFavorites,
   requireFavoritesLoaded,
-  addUserReview,
-  catchErrorPostUserReview
+  addUserReview
 } from "./actions";
 import {AuthorizationStatus} from "../constants";
 import {
@@ -72,12 +71,10 @@ export const getComments = (id) => (dispatch, _getState, api) => (
 
 export const postUserComment = (id, data) => (dispatch, _getState, api) => (
   api.post(`coments/${id}`, data)
-    .then(() => dispatch(catchErrorPostUserReview(false)))
     .then(() => dispatch(addUserReview(false)))
     .then(() => api.get(`comments/${id}`)
       .then((reviews) => dispatch(setReviews(reviews.data.map(adaptReview)))))
-      .then(() => dispatch(addUserReview(true)))
-    .catch(() => dispatch(catchErrorPostUserReview(true))));
+      .then(() => dispatch(addUserReview(true))));
 
 export const getFavorites = () => (dispatch, _getState, api) => (
   api.get(`favorite`)

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {postUserComment} from '../../store/api-actions';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {getIsReviewPosted, getIsReviewPostedError} from '../../store/room-info-page-data/selectors';
+import {getIsReviewPosted} from '../../store/room-info-page-data/selectors';
 
 const CommentForm = ({id, postComment, isReviewPosted}) => {
 
@@ -18,9 +18,7 @@ const CommentForm = ({id, postComment, isReviewPosted}) => {
     setComment(evt.currentTarget.value);
   };
 
-  const isDisabled = () => (
-    comment.trim().length > 49 && comment.trim().length < 301 && rating !== null
-  );
+  const isDisabled = comment.trim().length > 49 && comment.trim().length < 301 && rating !== null;
 
   const onSubmit = () => (evt) => {
     evt.preventDefault();
@@ -127,7 +125,7 @@ const CommentForm = ({id, postComment, isReviewPosted}) => {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={`${isDisabled() ? `` : `disabled`}`}>Submit</button>
+          disabled={`${isDisabled ? `` : `disabled`}`}>Submit</button>
       </div>
     </form>
   );
@@ -135,18 +133,19 @@ const CommentForm = ({id, postComment, isReviewPosted}) => {
 
 CommentForm.propTypes = {
   id: PropTypes.number.isRequired,
-  postComment: PropTypes.func.isRequired
+  postComment: PropTypes.func.isRequired,
+  isReviewPosted: PropTypes.bool
 };
 
 const mapStateToProps = (state) => {
   return {
-    isReviewPosted: getIsReviewPosted(state),
-    isReviewPostedError: getIsReviewPostedError(state)
+    isReviewPosted: getIsReviewPosted(state)
   };
 };
 
 const mapDispatchToProps = {
   postComment: postUserComment
+
 };
 
 export {CommentForm};

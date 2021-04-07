@@ -43,7 +43,7 @@ const removeMarkers = (map) => {
   });
 };
 
-const Map = ({city, cards, activePoint = {}, activeCardId}) => {
+const Map = ({city, cards, activeCardId}) => {
 
   const mapRef = useRef();
 
@@ -87,12 +87,6 @@ Map.propTypes = {
   city: PropTypes.shape({
     latitude: PropTypes.number.isRequired,
     longitude: PropTypes.number.isRequired,
-    zoom: PropTypes.number.isRequired,
-  }),
-  activePoint: PropTypes.shape({
-    latitude: PropTypes.number,
-    longitude: PropTypes.number,
-    zoom: PropTypes.number,
   }),
   points: PropTypes.arrayOf(
       PropTypes.shape({
@@ -102,6 +96,19 @@ Map.propTypes = {
           zoom: PropTypes.number.isRequired,
         }),
         name: PropTypes.string
+      })
+  ),
+  activeCardId: PropTypes.number,
+  cards: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        isFavorite: PropTypes.bool.isRequired,
+        isPremium: PropTypes.bool.isRequired,
+        previewImage: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        rating: PropTypes.number.isRequired,
+        title: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired
       })
   )
 };
