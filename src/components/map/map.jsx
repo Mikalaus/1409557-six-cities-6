@@ -32,6 +32,9 @@ const setMarkers = (map, cards, activeCardId) => {
       }, {icon: card.id === activeCardId ? ACTIVE_ICON : ICON})
       .addTo(map)
       .bindPopup(card.title);
+    if (card.id === activeCardId) {
+      map.flyTo(new leaflet.LatLng(card.location.latitude, card.location.longitude), INITIAL_SETTINGS.zoom);
+    }
   });
 };
 
