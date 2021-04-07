@@ -11,7 +11,7 @@ import {fetchOffer, getUserInfo, postFavorites} from '../../store/api-actions';
 import {connect} from 'react-redux';
 import Spinner from '../spinner/spinner';
 import PremiumAdvertisement from '../universal/premium-advertisement';
-import {nullifyIsOfferLoaded, setActivePointAction} from '../../store/actions';
+import {nullifyIsOfferLoaded, setActiveOfferId} from '../../store/actions';
 import PropertiesList from '../property-list/property-list';
 import Header from '../header/header';
 import {getCityName, getCityLocation} from '../../store/main-page-data/selectors';
@@ -34,7 +34,7 @@ const RoomInfoPage = ({
   authorizationStatus,
   nearby,
   reviews,
-  setActivePoint,
+  setActiveСardId,
   nullifyOfferLoaded,
   addToFavorites,
   onUserInfo
@@ -176,7 +176,7 @@ const RoomInfoPage = ({
               city={cityLocation}
               cards={[...nearby, offer]}
             />
-            {setActivePoint(offer.location)}
+            {setActiveСardId(offer.id)}
           </section>
         </section>
         <div className="container">
@@ -204,6 +204,7 @@ const RoomInfoPage = ({
 
 RoomInfoPage.propTypes = {
   offer: PropTypes.shape({
+    id: PropTypes.number,
     isFavorite: PropTypes.bool,
     isPremium: PropTypes.bool,
     previewImage: PropTypes.string,
@@ -231,7 +232,7 @@ RoomInfoPage.propTypes = {
   authorizationStatus: PropTypes.bool,
   nearby: PropTypes.array,
   reviews: PropTypes.array,
-  setActivePoint: PropTypes.func,
+  setActiveСardId: PropTypes.func,
   nullifyOfferLoaded: PropTypes.func,
   favorites: PropTypes.array,
   addToFavorites: PropTypes.func,
@@ -257,8 +258,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(fetchOffer(id));
   },
 
-  setActivePoint(point) {
-    dispatch(setActivePointAction(point));
+  setActiveСardId(id) {
+    dispatch(setActiveOfferId(id));
   },
 
   nullifyOfferLoaded() {
